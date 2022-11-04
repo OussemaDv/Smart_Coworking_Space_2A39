@@ -1,7 +1,7 @@
 #include "adherents.h"
 
-
-adherents::adherents(int cin,QString nom,QString prenom,QString date,QString email){
+adherents::adherents(int cin,QString nom,QString prenom,QString date,QString email)
+{
     this->cin=cin;
     this->nom=nom;
     this->prenom=prenom;
@@ -9,7 +9,8 @@ adherents::adherents(int cin,QString nom,QString prenom,QString date,QString ema
     this->email=email;
 }
 
-bool adherents::ajouter(){
+bool adherents::ajouter()
+{
     QSqlQuery query;
     QString res= QString::number(cin);
 
@@ -27,7 +28,8 @@ bool adherents::ajouter(){
     return query.exec();
 }
 
-bool adherents::supprimer(int cin){
+bool adherents::supprimer(int cin)
+{
     QSqlQuery query;
     QString res=QString::number(cin);
 
@@ -41,7 +43,8 @@ bool adherents::supprimer(int cin){
     return query.exec();
 }
 
-QSqlQueryModel * adherents::afficher(){
+QSqlQueryModel * adherents::afficher()
+{
     QSqlQueryModel * model=new QSqlQueryModel();
 
     model->setQuery("select * from adherent");
@@ -55,7 +58,8 @@ QSqlQueryModel * adherents::afficher(){
     return model;
 }
 
-bool adherents::modifier(int cin){
+bool adherents::modifier(int cin)
+{
     QSqlQuery query;
     QString res= QString::number(cin);
 
@@ -101,4 +105,26 @@ QSqlQueryModel * adherents::ordre_decroissant()
        model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
 
        return model;
+}
+
+QSqlQueryModel * adherents::get_id()
+{
+       QSqlQueryModel * model=new QSqlQueryModel();
+       model->setQuery("select cin from adherent");
+       return model;
+}
+
+QSqlQueryModel * adherents::recherche_cin(QString cin)
+{
+        QSqlQueryModel * model=new QSqlQueryModel();
+
+        model->setQuery("select * from adherent where cin LIKE '"+cin+"'");
+
+        model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+        model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+        model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+        model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+        model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+        return model;
 }

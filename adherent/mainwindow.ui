@@ -335,7 +335,11 @@ background-repeat: none;
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -386,7 +390,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -419,7 +427,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -429,7 +441,7 @@ font:bold;</string>
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>21</width>
+        <width>31</width>
         <height>31</height>
        </rect>
       </property>
@@ -452,7 +464,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -485,7 +501,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -554,7 +574,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -646,7 +670,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -656,7 +684,7 @@ font:bold;</string>
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>21</width>
+        <width>31</width>
         <height>31</height>
        </rect>
       </property>
@@ -733,7 +761,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -748,7 +780,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -763,7 +799,11 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
@@ -868,12 +908,35 @@ font:bold;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="mod_cinn">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>60</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
       </property>
      </widget>
     </widget>
@@ -923,21 +986,6 @@ font:bold;</string>
        <string>cin:</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="cin_sup">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>90</y>
-        <width>151</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(0, 0, 0);
-font-size: 12px;
-font:bold;</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
@@ -954,6 +1002,25 @@ font:bold;</string>
       </property>
       <property name="text">
        <string>Adhérent à supprimer:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="cin_supp">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>90</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
       </property>
      </widget>
     </widget>

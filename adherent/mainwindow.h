@@ -36,6 +36,14 @@ private slots:
     void on_decroissant_clicked();
 
 
+    void on_mod_cin_editingFinished();
+
+    void on_reset_clicked();
+
+    void on_reset_2_clicked();
+
+    void on_rechercher_clicked();
+
 private:
     Ui::MainWindow *ui;
     adherents a;

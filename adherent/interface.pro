@@ -19,12 +19,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     adherents.cpp \
     connexion.cpp \
+    login.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     adherents.h \
     connexion.h \
+    login.h \
     mainwindow.h
 
 FORMS += \

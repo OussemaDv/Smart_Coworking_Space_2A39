@@ -35,6 +35,8 @@ QSqlQueryModel * afficher();
 bool modifier(int);
 QSqlQueryModel * ordre_croissant();
 QSqlQueryModel * ordre_decroissant();
+QSqlQueryModel * get_id();
+QSqlQueryModel * recherche_cin(QString);
 };
 
 #endif // ADHERENTS_H
