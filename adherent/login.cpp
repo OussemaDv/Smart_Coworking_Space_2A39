@@ -1,5 +1,6 @@
 #include "login.h"
 #include "ui_login.h"
+#include "mainwindow.h"
 
 login::login(QWidget *parent) :
     QDialog(parent),
@@ -26,17 +27,21 @@ void login::on_loggin_clicked()
         {
             count++;
         }
-        if(count==1){
+        if(count==1)
+        {
             this->hide();
             login log;
             log.setModal(true);
             log.exec();
         }
-        if(count>1){
+        if(count>1)
+        {
             QMessageBox::information(nullptr,QObject::tr("Erreur"),QObject::tr("Username or password is incorrect!"),QMessageBox::Close);
         }
-        if(count<1){
+        if(count<1)
+        {
             QMessageBox::information(nullptr,QObject::tr("Erreur"),QObject::tr("Username or password is incorrect!"),QMessageBox::Close);
         }
     }
 }
+

@@ -79,52 +79,52 @@ bool adherents::modifier(int cin)
 
 QSqlQueryModel * adherents::ordre_croissant()
 {
-       QSqlQueryModel * model=new QSqlQueryModel();
+    QSqlQueryModel * model=new QSqlQueryModel();
 
-       model->setQuery("select * from adherent  order by nom ASC" );
+    model->setQuery("select * from adherent  order by nom ASC" );
 
-       model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
-       model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
-       model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
-       model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
-       model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
 
-       return model;
+    return model;
 }
 
 QSqlQueryModel * adherents::ordre_decroissant()
 {
-       QSqlQueryModel * model=new QSqlQueryModel();
+    QSqlQueryModel * model=new QSqlQueryModel();
 
-       model->setQuery("select * from adherent  order by nom DESC" );
+    model->setQuery("select * from adherent  order by nom DESC" );
 
-       model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
-       model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
-       model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
-       model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
-       model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
 
-       return model;
+    return model;
 }
 
 QSqlQueryModel * adherents::get_id()
 {
-       QSqlQueryModel * model=new QSqlQueryModel();
-       model->setQuery("select cin from adherent");
-       return model;
+    QSqlQueryModel * model=new QSqlQueryModel();
+    model->setQuery("select cin from adherent");
+    return model;
 }
 
 QSqlQueryModel * adherents::recherche_cin(QString cin)
 {
-        QSqlQueryModel * model=new QSqlQueryModel();
+    QSqlQueryModel * model=new QSqlQueryModel();
 
-        model->setQuery("select * from adherent where cin LIKE '"+cin+"'");
+    model->setQuery("select * from adherent where cin LIKE '"+cin+"'");
 
-        model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
-        model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
-        model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
-        model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
-        model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
 
-        return model;
+    return model;
 }

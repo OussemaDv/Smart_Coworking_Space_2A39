@@ -254,7 +254,7 @@ background-repeat: none;
 }</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="Ajouter">
      <property name="styleSheet">
@@ -660,25 +660,6 @@ font:bold;</string>
      <attribute name="title">
       <string>Modifier</string>
      </attribute>
-     <widget class="QLineEdit" name="mod_cin">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>60</y>
-        <width>151</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: 1px solid;
-border-radius: 5px;
-padding: 1px 18px 1px 3px;
-min-width: 6em;
-color: rgb(0, 0, 0);
-font-size: 12px;
-font:bold;</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_28">
       <property name="geometry">
        <rect>
@@ -920,10 +901,10 @@ font:bold;</string>
        <string/>
       </property>
      </widget>
-     <widget class="QComboBox" name="mod_cinn">
+     <widget class="QComboBox" name="mod_cin">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>190</x>
         <y>60</y>
         <width>151</width>
         <height>31</height>
@@ -932,8 +913,6 @@ font:bold;</string>
       <property name="styleSheet">
        <string notr="true">border: 1px solid;
 border-radius: 5px;
-padding: 1px 18px 1px 3px;
-min-width: 6em;
 color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>
@@ -1016,8 +995,6 @@ font:bold;</string>
       <property name="styleSheet">
        <string notr="true">border: 1px solid;
 border-radius: 5px;
-padding: 1px 18px 1px 3px;
-min-width: 6em;
 color: rgb(0, 0, 0);
 font-size: 12px;
 font:bold;</string>

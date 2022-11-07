@@ -34,15 +34,10 @@ private slots:
     void on_modifier_clicked();
     void on_croissant_clicked();
     void on_decroissant_clicked();
-
-
-    void on_mod_cin_editingFinished();
-
     void on_reset_clicked();
-
     void on_reset_2_clicked();
-
     void on_rechercher_clicked();
+    void on_mod_cin_currentIndexChanged();
 
 private:
     Ui::MainWindow *ui;
