@@ -1,8 +1,12 @@
 #ifndef ADHERENTS_H
 #define ADHERENTS_H
+#include <iostream>
+#include <string>
 #include<QString>
 #include<QSqlQuery>
 #include<QSqlQueryModel>
+
+using namespace std;
 
 class adherents
 {
@@ -33,10 +37,10 @@ bool ajouter();
 bool supprimer(int);
 QSqlQueryModel * afficher();
 bool modifier(int);
-QSqlQueryModel * ordre_croissant();
-QSqlQueryModel * ordre_decroissant();
-QSqlQueryModel * get_id();
 QSqlQueryModel * recherche_cin(QString);
+QSqlQueryModel * tri_cin();
+QSqlQueryModel * tri_nom();
+QSqlQueryModel * get_id();
 };
 
 #endif // ADHERENTS_H

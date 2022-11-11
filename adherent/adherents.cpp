@@ -77,11 +77,11 @@ bool adherents::modifier(int cin)
     return query.exec();
 }
 
-QSqlQueryModel * adherents::ordre_croissant()
+QSqlQueryModel * adherents::tri_cin()
 {
     QSqlQueryModel * model=new QSqlQueryModel();
 
-    model->setQuery("select * from adherent  order by nom ASC" );
+    model->setQuery("select * from adherent  order by cin ASC" );
 
     model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
     model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
@@ -92,11 +92,11 @@ QSqlQueryModel * adherents::ordre_croissant()
     return model;
 }
 
-QSqlQueryModel * adherents::ordre_decroissant()
+QSqlQueryModel * adherents::tri_nom()
 {
     QSqlQueryModel * model=new QSqlQueryModel();
 
-    model->setQuery("select * from adherent  order by nom DESC" );
+    model->setQuery("select * from adherent  order by nom ASC" );
 
     model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
     model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));

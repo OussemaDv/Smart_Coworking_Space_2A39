@@ -7,6 +7,12 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QRegExpValidator>
+#include <QPdfWriter>
+#include <QPainter>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QTextDocument>
+#include "QZXing/QZXing.h"
 #include "adherents.h"
 
 #define valid_email "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$"
@@ -32,12 +38,14 @@ private slots:
     void on_ajouter_clicked();
     void on_supprimer_clicked();
     void on_modifier_clicked();
-    void on_croissant_clicked();
-    void on_decroissant_clicked();
     void on_reset_clicked();
     void on_reset_2_clicked();
     void on_rechercher_clicked();
     void on_mod_cin_currentIndexChanged();
+    void on_pdf_clicked();
+    void on_tri_cin_clicked();
+    void on_tri_nom_clicked();
+    void on_cin_qr_currentIndexChanged();
 
 private:
     Ui::MainWindow *ui;
