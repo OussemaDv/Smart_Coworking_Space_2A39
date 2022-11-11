@@ -77,7 +77,7 @@ bool adherents::modifier(int cin)
     return query.exec();
 }
 
-QSqlQueryModel * adherents::tri_cin()
+QSqlQueryModel * adherents::tri_cin_croissant()
 {
     QSqlQueryModel * model=new QSqlQueryModel();
 
@@ -92,11 +92,41 @@ QSqlQueryModel * adherents::tri_cin()
     return model;
 }
 
-QSqlQueryModel * adherents::tri_nom()
+QSqlQueryModel * adherents::tri_cin_decroissant()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+    model->setQuery("select * from adherent  order by cin DESC" );
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+    return model;
+}
+
+QSqlQueryModel * adherents::tri_nom_croissant()
 {
     QSqlQueryModel * model=new QSqlQueryModel();
 
     model->setQuery("select * from adherent  order by nom ASC" );
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+    return model;
+}
+
+QSqlQueryModel * adherents::tri_nom_decroissant()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+    model->setQuery("select * from adherent  order by nom DESC" );
 
     model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
     model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));

@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cin_supp->setModel(a.get_id());
     ui->mod_cin->setModel(a.get_id());
     ui->cin_qr->setModel(a.get_id());
+    ui->cin_pdf->setModel(a.get_id());
 
     //email validator
     QRegExp email(valid_email);
@@ -90,6 +91,7 @@ void MainWindow::on_ajouter_clicked()
             ui->cin_supp->setModel(a.get_id());
             ui->mod_cin->setModel(a.get_id());
             ui->cin_qr->setModel(a.get_id());
+            ui->cin_pdf->setModel(a.get_id());
             QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("ajout effectué.\n click Close to exit."),QMessageBox::Close);
             ui->cin->clear();
             ui->nom->clear();
@@ -117,6 +119,7 @@ void MainWindow::on_supprimer_clicked()
         ui->cin_supp->setModel(a.get_id());
         ui->mod_cin->setModel(a.get_id());
         ui->cin_qr->setModel(a.get_id());
+        ui->cin_pdf->setModel(a.get_id());
         QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("suppression effectuer.\n" "click Close to exit."),QMessageBox::Close);
         ui->cin_supp->clear();
     }
@@ -173,37 +176,6 @@ void MainWindow::on_rechercher_clicked()
     ui->rech_cin->clear();
 }
 
-void MainWindow::on_tri_cin_clicked()
-{
-    ui->tableView->setModel(a.tri_cin());
-}
-
-void MainWindow::on_tri_nom_clicked()
-{
-    ui->tableView->setModel(a.tri_nom());
-}
-
-void MainWindow::on_pdf_clicked()
-{
-    QPdfWriter pdf("C:/Users/azizs/Desktop/aziz.pdf");
-
-    QPainter print(&pdf);
-
-    print.setPen(Qt::black);
-    print.drawText(100,0,"Title here");
-    print.setPen(Qt::red);
-    print.drawText(200,0,"azizsansa");
-    print.drawPixmap(QRect(0,0,1440,1440),QPixmap("C:/Users/azizs/Desktop/adherent/images/logo.png"));
-
-    print.end();
-}
-
-
-
-
-
-
-
 void MainWindow::on_cin_qr_currentIndexChanged()
 {
         int rech=ui->cin_qr->currentText().toInt();
@@ -211,7 +183,6 @@ void MainWindow::on_cin_qr_currentIndexChanged()
          query.prepare("select * from adherent where cin=:cin");
          query.bindValue(":cin",rech);
 
-        //QString id,nb,type,poids,dimension;
         QString cin,nom,prenom,date,email;
 
         if(query.exec())
@@ -231,4 +202,77 @@ void MainWindow::on_cin_qr_currentIndexChanged()
         QGraphicsScene *qrcode = new QGraphicsScene(this);
         qrcode->addPixmap( QPixmap::fromImage(qr));
         ui->qrview->setScene(qrcode);
+}
+
+void MainWindow::on_cin_pdf_currentIndexChanged()
+{
+     QString rech=ui->cin_pdf->currentText();
+
+     QSqlQueryModel * info=new QSqlQueryModel();
+
+     info->setQuery("select * from adherent where cin LIKE '"+rech+"'");
+
+     info->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+     info->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+     info->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+     info->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+     info->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+     ui->pdfview->setModel(info);
+}
+
+void MainWindow::on_pdf_clicked()
+{
+    QPdfWriter pdf("C:/Users/azizs/Desktop/aziz.pdf");
+    QPainter print(&pdf);
+
+    int rech=ui->cin_qr->currentText().toInt();
+    QSqlQuery query;
+    query.prepare("select * from adherent where cin=:cin");
+    query.bindValue(":cin",rech);
+
+    QString cin,nom,prenom,date,email;
+
+    if(query.exec())
+    {
+            while (query.next())
+            {
+                cin=query.value(0).toString();
+                nom=query.value(1).toString();
+                prenom=query.value(2).toString();
+                date=query.value(3).toString();
+                email=query.value(4).toString();
+            }
+     }
+
+    print.setPen(Qt::black);
+    print.drawText(100,100,"adherent");
+    print.setPen(Qt::blue);
+    print.drawText(1000,100,400,145,0,cin);
+    print.setPen(Qt::blue);
+    print.drawText(1000,300,400,145,0,nom);
+    print.setPen(Qt::blue);
+    print.drawText(1000,600,400,145,0,prenom);
+    print.setPen(Qt::blue);
+    print.drawText(1000,900,400,145,0,date);
+    print.setPen(Qt::blue);
+    print.drawText(1000,1200,400,145,0,email);
+    print.drawRect(1,3,40,34);
+    //print.drawPixmap(QRect(0,0,1440,1440),QPixmap("C:/Users/azizs/Desktop/adherent/images/logo.png"));
+
+    print.end();
+}
+
+void MainWindow::on_tri_activated()
+{
+        if(ui->tri->currentText()=="------------------------------")
+          ui->tableView->setModel(a.afficher());
+        else if(ui->tri->currentText()=="cin par ordre croissant")
+            ui->tableView->setModel(a.tri_cin_croissant());
+        else if(ui->tri->currentText()=="cin par ordre decroissant")
+            ui->tableView->setModel(a.tri_cin_decroissant());
+        else if(ui->tri->currentText()=="nom par ordre croissant")
+            ui->tableView->setModel(a.tri_nom_croissant());
+        else if(ui->tri->currentText()=="nom par ordre decroissant")
+            ui->tableView->setModel(a.tri_nom_decroissant());
 }

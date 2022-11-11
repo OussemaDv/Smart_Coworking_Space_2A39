@@ -38,8 +38,10 @@ bool supprimer(int);
 QSqlQueryModel * afficher();
 bool modifier(int);
 QSqlQueryModel * recherche_cin(QString);
-QSqlQueryModel * tri_cin();
-QSqlQueryModel * tri_nom();
+QSqlQueryModel * tri_cin_croissant();
+QSqlQueryModel * tri_cin_decroissant();
+QSqlQueryModel * tri_nom_croissant();
+QSqlQueryModel * tri_nom_decroissant();
 QSqlQueryModel * get_id();
 };
 

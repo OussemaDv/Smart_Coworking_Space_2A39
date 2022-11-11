@@ -1,5 +1,6 @@
 QT       += core gui
 QT+=sql
+QT += printsupport
 
 CONFIG += enable_encoder_qr_code
 

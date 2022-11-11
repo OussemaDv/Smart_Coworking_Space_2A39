@@ -9,9 +9,13 @@
 #include <QRegExpValidator>
 #include <QPdfWriter>
 #include <QPainter>
+#include <QPrinter>
+#include <QPrintDialog>
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QTextDocument>
+#include <QTextStream>
+#include <QPixmap>
 #include "QZXing/QZXing.h"
 #include "adherents.h"
 
@@ -42,10 +46,10 @@ private slots:
     void on_reset_2_clicked();
     void on_rechercher_clicked();
     void on_mod_cin_currentIndexChanged();
+    void on_tri_activated();
     void on_pdf_clicked();
-    void on_tri_cin_clicked();
-    void on_tri_nom_clicked();
     void on_cin_qr_currentIndexChanged();
+    void on_cin_pdf_currentIndexChanged();
 
 private:
     Ui::MainWindow *ui;

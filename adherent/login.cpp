@@ -44,4 +44,3 @@ void login::on_loggin_clicked()
         }
     }
 }
-
