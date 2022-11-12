@@ -531,6 +531,61 @@ font:bold;</string>
        <string>Adresse email:</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="photo">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>360</y>
+        <width>75</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#photo{
+    border-width: 1px;
+    font: bold 11px;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+      </property>
+      <property name="text">
+       <string>upload</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="pic">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>10</y>
+        <width>341</width>
+        <height>331</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="aff">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>0</y>
+        <width>361</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#aff{
+background-color: transparent;
+background: none;
+border: none;
+background-repeat: none;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Afficher">
      <attribute name="title">
@@ -1172,7 +1227,7 @@ font:bold;</string>
        <rect>
         <x>20</x>
         <y>120</y>
-        <width>531</width>
+        <width>671</width>
         <height>51</height>
        </rect>
       </property>

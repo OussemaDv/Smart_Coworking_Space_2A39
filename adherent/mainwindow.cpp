@@ -221,6 +221,50 @@ void MainWindow::on_cin_pdf_currentIndexChanged()
      ui->pdfview->setModel(info);
 }
 
+void MainWindow::on_tri_activated()
+{
+        if(ui->tri->currentText()=="------------------------------")
+          ui->tableView->setModel(a.afficher());
+        else if(ui->tri->currentText()=="cin par ordre croissant")
+            ui->tableView->setModel(a.tri_cin_croissant());
+        else if(ui->tri->currentText()=="cin par ordre decroissant")
+            ui->tableView->setModel(a.tri_cin_decroissant());
+        else if(ui->tri->currentText()=="nom par ordre croissant")
+            ui->tableView->setModel(a.tri_nom_croissant());
+        else if(ui->tri->currentText()=="nom par ordre decroissant")
+            ui->tableView->setModel(a.tri_nom_decroissant());
+}
+
+void MainWindow::on_photo_clicked()
+{
+    QString picpath=QFileDialog::getOpenFileName(this,tr("Open file"),"c://","JPG File(*.jpg);;PNG File(*.png)");
+    int cin=ui->cin->text().toInt();
+    QSqlQuery query;
+    query.prepare("update adherent set pic=:picpath where cin=:cin");
+    query.bindValue(":picpath",picpath);
+    query.bindValue(":cin",cin);
+    query.exec();
+}
+
+void MainWindow::on_aff_clicked()
+{
+    QSqlQuery qry;
+    int cin=ui->cin->text().toInt();
+    qry.prepare("select * from adherent where cin=:cin");
+    qry.bindValue(":cin",cin);
+    if(qry.exec())
+    {
+        while(qry.next())
+        {
+            QPixmap photo;
+            QString location=qry.value(5).toString();
+            photo.load(location);
+            ui->pic->setPixmap(photo);
+            ui->pic->setScaledContents(true);
+        }
+    }
+}
+
 void MainWindow::on_pdf_clicked()
 {
     QPdfWriter pdf("C:/Users/azizs/Desktop/aziz.pdf");
@@ -261,18 +305,4 @@ void MainWindow::on_pdf_clicked()
     //print.drawPixmap(QRect(0,0,1440,1440),QPixmap("C:/Users/azizs/Desktop/adherent/images/logo.png"));
 
     print.end();
-}
-
-void MainWindow::on_tri_activated()
-{
-        if(ui->tri->currentText()=="------------------------------")
-          ui->tableView->setModel(a.afficher());
-        else if(ui->tri->currentText()=="cin par ordre croissant")
-            ui->tableView->setModel(a.tri_cin_croissant());
-        else if(ui->tri->currentText()=="cin par ordre decroissant")
-            ui->tableView->setModel(a.tri_cin_decroissant());
-        else if(ui->tri->currentText()=="nom par ordre croissant")
-            ui->tableView->setModel(a.tri_nom_croissant());
-        else if(ui->tri->currentText()=="nom par ordre decroissant")
-            ui->tableView->setModel(a.tri_nom_decroissant());
 }

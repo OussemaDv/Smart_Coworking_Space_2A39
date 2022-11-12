@@ -1,5 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include <iostream>
+#include <string>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
@@ -16,8 +18,11 @@
 #include <QTextDocument>
 #include <QTextStream>
 #include <QPixmap>
+#include <QFileDialog>
 #include "QZXing/QZXing.h"
 #include "adherents.h"
+
+using namespace std;
 
 #define valid_email "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$"
 #define valid_chaine "([A-Z][a-z]*)([\\s\\\'-][A-Z][a-z]*)*"
@@ -50,6 +55,8 @@ private slots:
     void on_pdf_clicked();
     void on_cin_qr_currentIndexChanged();
     void on_cin_pdf_currentIndexChanged();
+    void on_photo_clicked();
+    void on_aff_clicked();
 
 private:
     Ui::MainWindow *ui;
