@@ -46,7 +46,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//reset buttons
+//button annuler
 void MainWindow::on_reset_clicked()
 {
     ui->cin->clear();
@@ -54,8 +54,9 @@ void MainWindow::on_reset_clicked()
     ui->prenom->clear();
     ui->date->clear();
     ui->email->clear();
+    ui->genre->setCurrentIndex(0);
 }
-
+//button annuler
 void MainWindow::on_reset_2_clicked()
 {
     ui->mod_cin->clear();
@@ -63,8 +64,9 @@ void MainWindow::on_reset_2_clicked()
     ui->mod_pren->clear();
     ui->mod_date->clear();
     ui->mod_email->clear();
+    ui->mod_genre->setCurrentIndex(0);
 }
-
+//button ajouter
 void MainWindow::on_ajouter_clicked()
 {
     //recuperation des information
@@ -73,10 +75,11 @@ void MainWindow::on_ajouter_clicked()
     QString prenom=ui->prenom->text();
     QString date=ui->date->text();
     QString email=ui->email->text();
+    QString genre=ui->genre->currentText();
 
-    adherents a(cin,nom,prenom,date,email);
+    adherents a(cin,nom,prenom,date,email,genre);
 
-    if(nom.isEmpty() || prenom.isEmpty() || date.isEmpty() || email.isEmpty() || cin==0)
+    if(nom.isEmpty() || prenom.isEmpty() || date.isEmpty() || email.isEmpty() || cin==0 || ui->genre->currentIndex()==0)
     {
         QMessageBox::information(nullptr,QObject::tr("Erreur"),QObject::tr("Remplir les champs vide!"),QMessageBox::Close);
     }
@@ -98,6 +101,7 @@ void MainWindow::on_ajouter_clicked()
             ui->prenom->clear();
             ui->date->clear();
             ui->email->clear();
+            ui->genre->setCurrentIndex(0);
         }
         else
         {
@@ -105,7 +109,7 @@ void MainWindow::on_ajouter_clicked()
         }
     }
 }
-
+//button supprimer
 void MainWindow::on_supprimer_clicked()
 {
     //recuperation de cin a supprimer
@@ -128,7 +132,7 @@ void MainWindow::on_supprimer_clicked()
         QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("suppresssion non effectuer.\n" "click Close to exit."),QMessageBox::Close);
     }
 }
-
+//button modifier
 void MainWindow::on_modifier_clicked()
 {
     //recuperation des informlation
@@ -137,8 +141,9 @@ void MainWindow::on_modifier_clicked()
     QString prenom=ui->mod_pren->text();
     QString date=ui->mod_date->text();
     QString email=ui->mod_email->text();
+    QString genre=ui->mod_genre->currentText();
 
-    adherents a(cin,nom,prenom,date,email);
+    adherents a(cin,nom,prenom,date,email,genre);
 
     bool test=a.modifier(cin);
     if(test)
@@ -150,7 +155,7 @@ void MainWindow::on_modifier_clicked()
     else
         QMessageBox::critical(nullptr, QObject::tr("not ok"),QObject::tr("Modification echoue.\n" "Click Close to exit."), QMessageBox::Close);
 }
-
+//modifier cin combobox
 void MainWindow::on_mod_cin_currentIndexChanged()
 {
     int cin=ui->mod_cin->currentText().toInt();
@@ -165,17 +170,18 @@ void MainWindow::on_mod_cin_currentIndexChanged()
             ui->mod_pren->setText(query.value(2).toString());
             ui->mod_date->setText(query.value(3).toString());
             ui->mod_email->setText(query.value(4).toString());
+            ui->mod_genre->setCurrentText(query.value(5).toString());
         }
     }
 }
-
+//button rechercher
 void MainWindow::on_rechercher_clicked()
 {
     QString cin=ui->rech_cin->text();
     ui->tableView->setModel(a.recherche_cin(cin));
     ui->rech_cin->clear();
 }
-
+//combobox de qrcode
 void MainWindow::on_cin_qr_currentIndexChanged()
 {
         int rech=ui->cin_qr->currentText().toInt();
@@ -183,7 +189,7 @@ void MainWindow::on_cin_qr_currentIndexChanged()
          query.prepare("select * from adherent where cin=:cin");
          query.bindValue(":cin",rech);
 
-        QString cin,nom,prenom,date,email;
+        QString cin,nom,prenom,date,email,genre;
 
         if(query.exec())
         {
@@ -194,16 +200,17 @@ void MainWindow::on_cin_qr_currentIndexChanged()
                     prenom=query.value(2).toString();
                     date=query.value(3).toString();
                     email=query.value(4).toString();
+                    genre=query.value(5).toString();
                 }
          }
         QString width="350",height="350";
-        QString info="Cin: "+cin+", Nom: "+nom+", Prenom: "+prenom+", Date de naissance: "+date+", Email: "+email+" ";
+        QString info="Cin: "+cin+", Nom: "+nom+", Prenom: "+prenom+", Date de naissance: "+date+", Genre: "+genre+" ,Email: "+email+" ";
         QImage qr = QZXing::encodeData(info,QZXing::EncoderFormat_QR_CODE,QSize(width.toInt(), height.toInt()),QZXing::EncodeErrorCorrectionLevel_H);
         QGraphicsScene *qrcode = new QGraphicsScene(this);
         qrcode->addPixmap( QPixmap::fromImage(qr));
         ui->qrview->setScene(qrcode);
 }
-
+//combobox de pdf
 void MainWindow::on_cin_pdf_currentIndexChanged()
 {
      QString rech=ui->cin_pdf->currentText();
@@ -217,10 +224,11 @@ void MainWindow::on_cin_pdf_currentIndexChanged()
      info->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
      info->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
      info->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+     info->setHeaderData(5,Qt::Horizontal,QObject::tr("Genre"));
 
      ui->pdfview->setModel(info);
 }
-
+//tri combobox
 void MainWindow::on_tri_activated()
 {
         if(ui->tri->currentText()=="------------------------------")
@@ -234,7 +242,7 @@ void MainWindow::on_tri_activated()
         else if(ui->tri->currentText()=="nom par ordre decroissant")
             ui->tableView->setModel(a.tri_nom_decroissant());
 }
-
+//button upload
 void MainWindow::on_photo_clicked()
 {
     QString picpath=QFileDialog::getOpenFileName(this,tr("Open file"),"c://","JPG File(*.jpg);;PNG File(*.png)");
@@ -245,7 +253,7 @@ void MainWindow::on_photo_clicked()
     query.bindValue(":cin",cin);
     query.exec();
 }
-
+//images de ajout
 void MainWindow::on_aff_clicked()
 {
     QSqlQuery qry;
@@ -257,14 +265,14 @@ void MainWindow::on_aff_clicked()
         while(qry.next())
         {
             QPixmap photo;
-            QString location=qry.value(5).toString();
+            QString location=qry.value(6).toString();
             photo.load(location);
             ui->pic->setPixmap(photo);
             ui->pic->setScaledContents(true);
         }
     }
 }
-
+//button generer pdf
 void MainWindow::on_pdf_clicked()
 {
     QPdfWriter pdf("C:/Users/azizs/Desktop/aziz.pdf");
@@ -275,7 +283,7 @@ void MainWindow::on_pdf_clicked()
     query.prepare("select * from adherent where cin=:cin");
     query.bindValue(":cin",rech);
 
-    QString cin,nom,prenom,date,email;
+    QString cin,nom,prenom,date,email,genre;
 
     if(query.exec())
     {
@@ -286,6 +294,7 @@ void MainWindow::on_pdf_clicked()
                 prenom=query.value(2).toString();
                 date=query.value(3).toString();
                 email=query.value(4).toString();
+                genre=query.value(5).toString();
             }
      }
 
@@ -301,8 +310,52 @@ void MainWindow::on_pdf_clicked()
     print.drawText(1000,900,400,145,0,date);
     print.setPen(Qt::blue);
     print.drawText(1000,1200,400,145,0,email);
+    print.setPen(Qt::blue);
+    print.drawText(1000,1200,400,145,0,genre);
     print.drawRect(1,3,40,34);
     //print.drawPixmap(QRect(0,0,1440,1440),QPixmap("C:/Users/azizs/Desktop/adherent/images/logo.png"));
 
     print.end();
+}
+//button statiqtique
+void MainWindow::on_stat_clicked()
+{
+    QSqlQueryModel * model= new QSqlQueryModel();
+     model->setQuery("select * from adherent where genre='Male' ");
+     int number1=model->rowCount(); // calculer la somme des adherent de genre male
+     model->setQuery("select * from adherent where genre='Female' ");
+     int number2=model->rowCount(); // calculer la somme des adherent de genre female
+
+     int total=number1+number2;
+     QString a = QString("male  "+QString::number((number1*100)/total,'f',2)+"%");
+     QString b = QString("female "+QString::number((number2*100)/total,'f',2)+"%");
+
+     QPieSeries *series = new QPieSeries();
+     series->append(a,number1); // te9sem charte graphique
+     series->append(b,number2);
+
+     if (number1!= 0)
+     {
+         QPieSlice *slice = series->slices().at(0); //bib doura
+         slice->setLabelVisible();
+         slice->setPen(QPen());
+     }
+     if (number2!=0)
+     {
+              // Add label, explode and define brush for 2nd slice
+              QPieSlice *slice1 = series->slices().at(1);
+              //slice1->setExploded();
+              slice1->setLabelVisible();
+     }
+             // Create the chart widget
+             QChart *chart = new QChart();
+             // Add data to chart with title and hide legend
+             chart->addSeries(series);
+             chart->setTitle("pourcentage des genres");
+             chart->legend()->hide();
+             // Used to display the chart
+             QChartView *chartView = new QChartView(chart);
+             chartView->setRenderHint(QPainter::Antialiasing);
+             chartView->resize(1000,500);
+             chartView->show();
 }

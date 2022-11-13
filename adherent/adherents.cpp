@@ -1,12 +1,13 @@
 #include "adherents.h"
 
-adherents::adherents(int cin,QString nom,QString prenom,QString date,QString email)
+adherents::adherents(int cin,QString nom,QString prenom,QString date,QString email,QString genre)
 {
     this->cin=cin;
     this->nom=nom;
     this->prenom=prenom;
     this->date=date;
     this->email=email;
+    this->genre=genre;
 }
 
 bool adherents::ajouter()
@@ -15,7 +16,7 @@ bool adherents::ajouter()
     QString res= QString::number(cin);
 
     //requette sql
-    query.prepare("insert into adherent(cin,nom,prenom,date_naissance,email)" "values(:cin,:nom,:prenom,:date,:email)");
+    query.prepare("insert into adherent(cin,nom,prenom,date_naissance,email,genre)" "values(:cin,:nom,:prenom,:date,:email,:genre)");
 
     //saisir de donnee
     query.bindValue(":cin",res);
@@ -23,6 +24,8 @@ bool adherents::ajouter()
     query.bindValue(":prenom",prenom);
     query.bindValue(":date",date);
     query.bindValue(":email",email);
+    query.bindValue(":genre",genre);
+
 
     //execution de la requette
     return query.exec();

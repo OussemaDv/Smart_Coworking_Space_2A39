@@ -6,6 +6,9 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QMainWindow>
+#include <QtCharts>
+#include <QChartView>
+#include <QLineSeries>
 #include <QMessageBox>
 #include <QApplication>
 #include <QRegExpValidator>
@@ -57,6 +60,8 @@ private slots:
     void on_cin_pdf_currentIndexChanged();
     void on_photo_clicked();
     void on_aff_clicked();
+
+    void on_stat_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -10,13 +10,13 @@ using namespace std;
 
 class adherents
 {
-QString nom,prenom,date,email;
+QString nom,prenom,date,email,genre;
 int cin;
 
 public:
 //constructeur
 adherents(){};
-adherents(int,QString,QString,QString,QString);
+adherents(int,QString,QString,QString,QString,QString);
 
 //getters
 QString getnom(){return nom;}

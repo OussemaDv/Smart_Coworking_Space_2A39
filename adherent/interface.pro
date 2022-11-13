@@ -1,6 +1,9 @@
-QT       += core gui
-QT+=sql
+QT += core gui
+QT += core gui charts
+QT +=sql
 QT += printsupport
+QT += serialport
+
 
 CONFIG += enable_encoder_qr_code
 
@@ -24,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     adherents.cpp \
+    arduino.cpp \
     connexion.cpp \
     login.cpp \
     main.cpp \
@@ -31,6 +35,7 @@ SOURCES += \
 
 HEADERS += \
     adherents.h \
+    arduino.h \
     connexion.h \
     login.h \
     mainwindow.h
