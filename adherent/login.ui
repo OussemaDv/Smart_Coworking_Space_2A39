@@ -19,10 +19,10 @@
   <widget class="QPushButton" name="logo">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>-80</y>
-     <width>491</width>
-     <height>431</height>
+     <x>190</x>
+     <y>10</y>
+     <width>331</width>
+     <height>231</height>
     </rect>
    </property>
    <property name="styleSheet">

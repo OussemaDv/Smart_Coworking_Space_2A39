@@ -213,29 +213,6 @@
      <string>Gestion des services</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="logo">
-    <property name="geometry">
-     <rect>
-      <x>-100</x>
-      <y>-60</y>
-      <width>361</width>
-      <height>301</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#logo {
-background-color: transparent;
-border-image: url(:/images/logo.png);
-background: none;
-border: none;
-background-repeat: none;
-}
-</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QTabWidget" name="Buttons">
     <property name="geometry">
      <rect>
@@ -254,7 +231,7 @@ background-repeat: none;
 }</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Ajouter">
      <property name="styleSheet">
@@ -769,6 +746,16 @@ font:bold;</string>
       <item>
        <property name="text">
         <string>nom par ordre decroissant</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>prenom par ordre croissant</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>prenom par ordre decroissant</string>
        </property>
       </item>
      </widget>
@@ -1353,15 +1340,29 @@ font:bold;</string>
      </widget>
     </widget>
    </widget>
-   <zorder>logo</zorder>
-   <zorder>home</zorder>
-   <zorder>gestion1</zorder>
-   <zorder>gestion2</zorder>
-   <zorder>gestion3</zorder>
-   <zorder>gestion4</zorder>
-   <zorder>gestion5</zorder>
-   <zorder>gestion6</zorder>
-   <zorder>Buttons</zorder>
+   <widget class="QPushButton" name="logo">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>201</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#logo {
+background-color: transparent;
+border-image: url(:/images/logo.png);
+background: none;
+border: none;
+background-repeat: none;
+}
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

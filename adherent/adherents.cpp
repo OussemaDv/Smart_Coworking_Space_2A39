@@ -26,7 +26,6 @@ bool adherents::ajouter()
     query.bindValue(":email",email);
     query.bindValue(":genre",genre);
 
-
     //execution de la requette
     return query.exec();
 }
@@ -46,21 +45,6 @@ bool adherents::supprimer(int cin)
     return query.exec();
 }
 
-QSqlQueryModel * adherents::afficher()
-{
-    QSqlQueryModel * model=new QSqlQueryModel();
-
-    model->setQuery("select * from adherent");
-
-    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
-    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
-    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
-    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
-    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
-
-    return model;
-}
-
 bool adherents::modifier(int cin)
 {
     QSqlQuery query;
@@ -78,6 +62,21 @@ bool adherents::modifier(int cin)
 
     //execution de la requette
     return query.exec();
+}
+
+QSqlQueryModel * adherents::afficher()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+    model->setQuery("select * from adherent");
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+    return model;
 }
 
 QSqlQueryModel * adherents::tri_cin_croissant()
@@ -130,6 +129,36 @@ QSqlQueryModel * adherents::tri_nom_decroissant()
     QSqlQueryModel * model=new QSqlQueryModel();
 
     model->setQuery("select * from adherent  order by nom DESC" );
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+    return model;
+}
+
+QSqlQueryModel * adherents::tri_prenom_croissant()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+    model->setQuery("select * from adherent order by prenom ASC" );
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Prenom"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Date de naissance"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Email"));
+
+    return model;
+}
+
+QSqlQueryModel * adherents::tri_prenom_decroissant()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+    model->setQuery("select * from adherent order by prenom DESC" );
 
     model->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
     model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));

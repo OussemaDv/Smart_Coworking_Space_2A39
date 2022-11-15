@@ -23,6 +23,7 @@
 #include <QPixmap>
 #include <QFileDialog>
 #include "QZXing/QZXing.h"
+#include <QColor>
 #include "adherents.h"
 
 using namespace std;
@@ -60,7 +61,6 @@ private slots:
     void on_cin_pdf_currentIndexChanged();
     void on_photo_clicked();
     void on_aff_clicked();
-
     void on_stat_clicked();
 
 private:

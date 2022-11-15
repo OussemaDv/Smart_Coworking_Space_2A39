@@ -56,6 +56,7 @@ void MainWindow::on_reset_clicked()
     ui->email->clear();
     ui->genre->setCurrentIndex(0);
 }
+
 //button annuler
 void MainWindow::on_reset_2_clicked()
 {
@@ -66,6 +67,7 @@ void MainWindow::on_reset_2_clicked()
     ui->mod_email->clear();
     ui->mod_genre->setCurrentIndex(0);
 }
+
 //button ajouter
 void MainWindow::on_ajouter_clicked()
 {
@@ -109,6 +111,7 @@ void MainWindow::on_ajouter_clicked()
         }
     }
 }
+
 //button supprimer
 void MainWindow::on_supprimer_clicked()
 {
@@ -132,6 +135,7 @@ void MainWindow::on_supprimer_clicked()
         QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("suppresssion non effectuer.\n" "click Close to exit."),QMessageBox::Close);
     }
 }
+
 //button modifier
 void MainWindow::on_modifier_clicked()
 {
@@ -155,6 +159,7 @@ void MainWindow::on_modifier_clicked()
     else
         QMessageBox::critical(nullptr, QObject::tr("not ok"),QObject::tr("Modification echoue.\n" "Click Close to exit."), QMessageBox::Close);
 }
+
 //modifier cin combobox
 void MainWindow::on_mod_cin_currentIndexChanged()
 {
@@ -174,6 +179,7 @@ void MainWindow::on_mod_cin_currentIndexChanged()
         }
     }
 }
+
 //button rechercher
 void MainWindow::on_rechercher_clicked()
 {
@@ -181,6 +187,26 @@ void MainWindow::on_rechercher_clicked()
     ui->tableView->setModel(a.recherche_cin(cin));
     ui->rech_cin->clear();
 }
+
+//tri combobox
+void MainWindow::on_tri_activated()
+{
+        if(ui->tri->currentText()=="------------------------------")
+          ui->tableView->setModel(a.afficher());
+        else if(ui->tri->currentText()=="cin par ordre croissant")
+            ui->tableView->setModel(a.tri_cin_croissant());
+        else if(ui->tri->currentText()=="cin par ordre decroissant")
+            ui->tableView->setModel(a.tri_cin_decroissant());
+        else if(ui->tri->currentText()=="nom par ordre croissant")
+            ui->tableView->setModel(a.tri_nom_croissant());
+        else if(ui->tri->currentText()=="nom par ordre decroissant")
+            ui->tableView->setModel(a.tri_nom_decroissant());
+        else if(ui->tri->currentText()=="prenom par ordre croissant")
+            ui->tableView->setModel(a.tri_prenom_croissant());
+        else if(ui->tri->currentText()=="prenom par ordre decroissant")
+            ui->tableView->setModel(a.tri_prenom_decroissant());
+}
+
 //combobox de qrcode
 void MainWindow::on_cin_qr_currentIndexChanged()
 {
@@ -210,14 +236,15 @@ void MainWindow::on_cin_qr_currentIndexChanged()
         qrcode->addPixmap( QPixmap::fromImage(qr));
         ui->qrview->setScene(qrcode);
 }
+
 //combobox de pdf
 void MainWindow::on_cin_pdf_currentIndexChanged()
 {
-     QString rech=ui->cin_pdf->currentText();
+     QString cin=ui->cin_pdf->currentText();
 
      QSqlQueryModel * info=new QSqlQueryModel();
 
-     info->setQuery("select * from adherent where cin LIKE '"+rech+"'");
+     info->setQuery("select * from adherent where cin LIKE '"+cin+"'");
 
      info->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
      info->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
@@ -228,20 +255,7 @@ void MainWindow::on_cin_pdf_currentIndexChanged()
 
      ui->pdfview->setModel(info);
 }
-//tri combobox
-void MainWindow::on_tri_activated()
-{
-        if(ui->tri->currentText()=="------------------------------")
-          ui->tableView->setModel(a.afficher());
-        else if(ui->tri->currentText()=="cin par ordre croissant")
-            ui->tableView->setModel(a.tri_cin_croissant());
-        else if(ui->tri->currentText()=="cin par ordre decroissant")
-            ui->tableView->setModel(a.tri_cin_decroissant());
-        else if(ui->tri->currentText()=="nom par ordre croissant")
-            ui->tableView->setModel(a.tri_nom_croissant());
-        else if(ui->tri->currentText()=="nom par ordre decroissant")
-            ui->tableView->setModel(a.tri_nom_decroissant());
-}
+
 //button upload
 void MainWindow::on_photo_clicked()
 {
@@ -253,6 +267,7 @@ void MainWindow::on_photo_clicked()
     query.bindValue(":cin",cin);
     query.exec();
 }
+
 //images de ajout
 void MainWindow::on_aff_clicked()
 {
@@ -272,19 +287,22 @@ void MainWindow::on_aff_clicked()
         }
     }
 }
+
 //button generer pdf
 void MainWindow::on_pdf_clicked()
 {
+    //lemplacement de fichier a enregistrer
     QPdfWriter pdf("C:/Users/azizs/Desktop/aziz.pdf");
     QPainter print(&pdf);
 
-    int rech=ui->cin_qr->currentText().toInt();
+    //recherche des information a printer
+    int rech=ui->cin_pdf->currentText().toInt();
     QSqlQuery query;
     query.prepare("select * from adherent where cin=:cin");
     query.bindValue(":cin",rech);
 
     QString cin,nom,prenom,date,email,genre;
-
+    //ajout des donnee dans les variables
     if(query.exec())
     {
             while (query.next())
@@ -295,65 +313,87 @@ void MainWindow::on_pdf_clicked()
                 date=query.value(3).toString();
                 email=query.value(4).toString();
                 genre=query.value(5).toString();
+                qDebug()<<cin;
             }
      }
-
+    //creation de design de fichier
+    print.setBackgroundMode(Qt::OpaqueMode);
+    //ajout dun image
+    print.drawPixmap(QRect(7400,0,2000,2000),QPixmap("C:/Users/azizs/Desktop/adherent/images/logo.png"));
+    //contenu
     print.setPen(Qt::black);
-    print.drawText(100,100,"adherent");
-    print.setPen(Qt::blue);
-    print.drawText(1000,100,400,145,0,cin);
-    print.setPen(Qt::blue);
-    print.drawText(1000,300,400,145,0,nom);
-    print.setPen(Qt::blue);
-    print.drawText(1000,600,400,145,0,prenom);
-    print.setPen(Qt::blue);
-    print.drawText(1000,900,400,145,0,date);
-    print.setPen(Qt::blue);
-    print.drawText(1000,1200,400,145,0,email);
-    print.setPen(Qt::blue);
-    print.drawText(1000,1200,400,145,0,genre);
-    print.drawRect(1,3,40,34);
-    //print.drawPixmap(QRect(0,0,1440,1440),QPixmap("C:/Users/azizs/Desktop/adherent/images/logo.png"));
+    print.setFont(QFont("Arial", 20));
+    print.drawText(3500,1000,"Fiche adherent");
+    print.setFont(QFont("Arial", 10));
+    print.setPen(Qt::black);
+    print.drawText(3500,3000,"Cin:");
+    print.setPen(Qt::black);
+    print.drawText(3900,3000,cin);
+    print.setPen(Qt::black);
+    print.drawText(3500,3400,"Nom:");
+    print.setPen(Qt::black);
+    print.drawText(4100,3400,nom);
+    print.setPen(Qt::black);
+    print.drawText(3500,3800,"Prenom:");
+    print.setPen(Qt::black);
+    print.drawText(4200,3800,prenom);
+    print.setPen(Qt::black);
+    print.drawText(3500,4200,"Date de naissance:");
+    print.setPen(Qt::black);
+    print.drawText(5000,4200,date);
+    print.setPen(Qt::black);
+    print.drawText(3500,4600,"Adresse Email:");
+    print.setPen(Qt::black);
+    print.drawText(4800,4600,email);
+    print.setPen(Qt::black);
+    print.drawText(3500,5000,"Genre:");
+    print.setPen(Qt::black);
+    print.drawText(4100,5000,genre);
+    print.setPen(Qt::black);
+    print.drawRect(3200,2500,3000,3000);
 
     print.end();
 }
+
 //button statiqtique
 void MainWindow::on_stat_clicked()
 {
     QSqlQueryModel * model= new QSqlQueryModel();
      model->setQuery("select * from adherent where genre='Male' ");
-     int number1=model->rowCount(); // calculer la somme des adherent de genre male
+     int number1=model->rowCount(); //calculer la somme des adherent de genre male
      model->setQuery("select * from adherent where genre='Female' ");
-     int number2=model->rowCount(); // calculer la somme des adherent de genre female
+     int number2=model->rowCount(); //calculer la somme des adherent de genre female
 
+     //nombre des male*100/nombre des genres
      int total=number1+number2;
      QString a = QString("male  "+QString::number((number1*100)/total,'f',2)+"%");
      QString b = QString("female "+QString::number((number2*100)/total,'f',2)+"%");
 
+     //charte pie style
      QPieSeries *series = new QPieSeries();
-     series->append(a,number1); // te9sem charte graphique
+     series->append(a,number1); //te9sem charte graphique
      series->append(b,number2);
 
      if (number1!= 0)
      {
-         QPieSlice *slice = series->slices().at(0); //bib doura
+         //partie 1 de cercle
+         QPieSlice *slice = series->slices().at(0);
+         //affichage de pourcantage
          slice->setLabelVisible();
-         slice->setPen(QPen());
      }
      if (number2!=0)
      {
-              // Add label, explode and define brush for 2nd slice
+              //partie 2 de cercle
               QPieSlice *slice1 = series->slices().at(1);
-              //slice1->setExploded();
+              //affichage de pourcantage
               slice1->setLabelVisible();
      }
-             // Create the chart widget
+             //Create the chart widget
              QChart *chart = new QChart();
-             // Add data to chart with title and hide legend
+             //ajout des donnee et titre
              chart->addSeries(series);
-             chart->setTitle("pourcentage des genres");
-             chart->legend()->hide();
-             // Used to display the chart
+             chart->setTitle("Pourcentage des genres");
+             //afficher le charte avec sa parametre de taille
              QChartView *chartView = new QChartView(chart);
              chartView->setRenderHint(QPainter::Antialiasing);
              chartView->resize(1000,500);
