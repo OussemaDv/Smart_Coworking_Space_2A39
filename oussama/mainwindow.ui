@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1300</width>
+    <height>680</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>CRUD</string>
+         </attribute>
+         <widget class="QGroupBox" name="groupBox_affichage">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>30</y>
+            <width>511</width>
+            <height>551</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Affichage</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QTableView" name="tableView_affichage">
+             <property name="showGrid">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_ajout">
+          <property name="geometry">
+           <rect>
+            <x>630</x>
+            <y>50</y>
+            <width>541</width>
+            <height>171</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Ajout</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QFormLayout" name="formLayout">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_ajout_id">
+                 <property name="text">
+                  <string>ID:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_ajout_id">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_ajout_nb">
+                 <property name="text">
+                  <string>Nombre de places</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lineEdit_ajout_nb"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_ajout_bloc">
+                 <property name="text">
+                  <string>Bloc:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="lineEdit_ajout_bloc"/>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_ajout_date">
+                 <property name="text">
+                  <string>Date de création:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QDateEdit" name="dateEdit_ajout"/>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_ajouter">
+               <property name="text">
+                <string>Ajouter</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_modification">
+          <property name="geometry">
+           <rect>
+            <x>630</x>
+            <y>320</y>
+            <width>541</width>
+            <height>181</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Modification</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QFormLayout" name="formLayout_2">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_modification_id">
+               <property name="text">
+                <string>ID:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboBox_modification"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_modification_nb">
+               <property name="text">
+                <string>Nombre de places</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_modification_nb"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_modification_bloc">
+               <property name="text">
+                <string>Bloc:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEdit_modificatoin_bloc"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_modification_date">
+               <property name="text">
+                <string>Date de création:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QDateEdit" name="dateEdit_modification"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="pushButton_modifier">
+               <property name="text">
+                <string>Modifier</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_supprimer">
+               <property name="text">
+                <string>Supprimer</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>MAP</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="QComboBox" name="comboBox_map"/>
+            </item>
+            <item>
+             <widget class="QGraphicsView" name="graphicsView_map"/>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QPushButton" name="pushButton_rotation_droite">
+                <property name="text">
+                 <string>Rotation droite</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_rotation_gauche">
+                <property name="text">
+                 <string>Rotation gauche</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_marquer_libre">
+                <property name="text">
+                 <string>Marquer libre</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_marquer_occupee">
+                <property name="text">
+                 <string>Marquer occupée</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_map_pdf">
+                <property name="text">
+                 <string>PDF</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Recherche</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QLineEdit" name="lineEdit_rechercher">
+                <property name="text">
+                 <string>ID</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_rechercher">
+                <property name="text">
+                 <string>Rechercher</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_tri">
+                <property name="text">
+                 <string>Trier selon:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_id">
+                <property name="text">
+                 <string>ID</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_nb">
+                <property name="text">
+                 <string>Nombre de places</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_bloc">
+                <property name="text">
+                 <string>Bloc</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="comboBox_recherche">
+                <item>
+                 <property name="text">
+                  <string>Croissant</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Decroissant</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_tri">
+                <property name="text">
+                 <string>Trier</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTableView" name="tableView_recherche"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Statistiques</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_13">
+          <item>
+           <widget class="QGroupBox" name="groupBox">
+            <property name="title">
+             <string>Pourcentage de nombre de places par bloc</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_11">
+             <item>
+              <widget class="QGraphicsView" name="graphicsView"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="title">
+             <string>Pourcentage de nombre de salle par bloc</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_12">
+             <item>
+              <widget class="QGraphicsView" name="graphicsView_2"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Générer PDF</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="pushButton_server">
+          <property name="text">
+           <string>Connection / Déconnection Serveur</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_chat">
+          <property name="text">
+           <string>Génération Chat Box</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
