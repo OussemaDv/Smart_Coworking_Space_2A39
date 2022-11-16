@@ -228,10 +228,16 @@
     <property name="styleSheet">
      <string notr="true">#Buttons {
     font: bold 14px;
+	color:#32303D;
+	border-radius:12px;
+}
+QTabBar::tab:selected, QTabBar::tab:hover{
+background: #32303D;
+color:#ffffff;
 }</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="Ajouter">
      <property name="styleSheet">
