@@ -4,18 +4,21 @@
 #include "connection.h"
 #include <QSql>
 #include "authentificationn.h"
-
+#include "tache_a_faire.h"
 
 int main(int argc, char *argv[])
 {
 
     QApplication a(argc, argv);
     MainWindow w;
+    tache_a_faire t;
     authentificationn u;
     Connection c;
+
     bool test=c.createconnect();
     if(test)
     {//w.show();
+        //t.show();
         u.show();
         QMessageBox::information(nullptr, QObject::tr("database is open"),
                     QObject::tr("connection successful.\n"

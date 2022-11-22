@@ -8,6 +8,8 @@
 #include "employe.h"
 #include <QMainWindow>
 #include <QSql>
+#include "tache_a_faire.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +22,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+
+
 
 private slots:
     void on_pushButton_clicked();
@@ -40,9 +45,20 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_pushButton_4_clicked();
+
+
+
 private:
     Ui::MainWindow *ui;
     employe e;
+    tache_a_faire t;
+
+    QListView* m_pwPending = nullptr;
+    QListView* m_pwCompleted = nullptr;
+
+    QAction* m_pActAdd = nullptr;
+    QAction* m_pActRemove = nullptr;
 };
 
 #endif // MAINWINDOW_H

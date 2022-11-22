@@ -32,21 +32,25 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     connection.cpp \
-    statistique.cpp
+    tache_a_faire.cpp \
 
 HEADERS += \
     authentificationn.h \
     employe.h \
     mainwindow.h \
     connection.h \
-    statistique.h
+    tache_a_faire.h \
 
 FORMS += \
         authentificationn.ui \
         mainwindow.ui \
-    statistique.ui \
+        tache_a_faire.ui \
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc \

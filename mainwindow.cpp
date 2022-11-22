@@ -12,7 +12,16 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QPainter>
-#include "statistique.h"
+#include <QtCharts>
+#include <QDesktopServices>
+#include <QtCharts/QAreaSeries>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QPieSlice>
+#include <QPieSeries>
+#include <QChartView>
+#include <QColor>
+#include "tache_a_faire.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -141,29 +150,31 @@ void MainWindow::on_pb_recherche_clicked()
 
 void MainWindow::on_pb_pdf_clicked()
 {
-    {
+    {                   QSqlQuery query;
+
             QPdfWriter pdf("C:/Users/lenovo/Desktop/GESTIONN_EMPLOYEE/PDF.pdf");
+            QImage image("C:/Users/lenovo/Desktop/GESTIONN_EMPLOYEE/images/logo");
+             QImage image1("C:/Users/lenovo/Desktop/GESTIONN_EMPLOYEE/images/date");
 
-                   QPainter painter(&pdf);
-
-
-                  painter.setPen(Qt::red);
-                  painter.setFont(QFont("Arial", 50));
-                  painter.drawText(500,500,"LISTE DES EMPLOYES");
+                  const QPoint imageCoordinates(100,50);
+                  const QPoint image1Coordinates(7500,900);
+                  QPainter painter(&pdf);
+                  painter.drawImage(imageCoordinates,image);
+                  painter.drawImage(image1Coordinates,image1);
+                  painter.setPen(Qt::black);
+                  painter.setFont(QFont("Brush Script MT", 30));
+                  painter.drawText(3500,2400,"Liste des employés");
                   painter.drawRect(0,3000,9600,500);
+                  painter.setBackground(QBrush(BLACKNESS));
                   painter.setPen(Qt::red);
-                  painter.setFont(QFont("Arial", 11));
+                  painter.setFont(QFont("Comic Sans MS", 12));
                   painter.drawText(500,3300,"ID");
                   painter.drawText(1500,3300,"NOM");
-                  painter.drawText(3500,3300,"PRENOM");
+                  painter.drawText(3000,3300,"PRENOM");
                   painter.drawText(5000,3300,"POSTE");
                   painter.drawText(6500,3300,"EMAIL_EMP");
-                  painter.drawText(7500,3300,"ADRESSE_EMP");
+                  painter.drawText(8000,3300,"ADRESSE_EMP");
 
-
-
-
-                  QSqlQuery query;
                   int i = 4000;
 
                    query.prepare("select * from employe");
@@ -171,14 +182,13 @@ void MainWindow::on_pb_pdf_clicked()
                 while (query.next())
                   {
                   painter.setPen(Qt::black);
-                  painter.setFont(QFont("Arial", 9));
+                  painter.setFont(QFont("Calibri", 10));
                   painter.drawText(500,i,query.value(0).toString());
-                  painter.drawText(1800,i,query.value(1).toString());
-                  painter.drawText(3500,i,query.value(2).toString());
+                  painter.drawText(1500,i,query.value(1).toString());
+                  painter.drawText(3000,i,query.value(2).toString());
                   painter.drawText(5000,i,query.value(3).toString());
                   painter.drawText(6500,i,query.value(4).toString());
-                  painter.drawText(7500,i,query.value(5).toString());
-
+                  painter.drawText(8000,i,query.value(5).toString());
 
                   i = i +500;
                                       }
@@ -194,6 +204,79 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-   statistique s;
-   s.exec();
+    QSqlQueryModel * model= new QSqlQueryModel();
+     QPainter painter(this);
+                       model->setQuery("select * from EMPLOYE where POSTE = 'Ingenieur'");
+                       float x=model->rowCount();
+
+                       model->setQuery("select * from EMPLOYE where POSTE = 'Directeur'");
+                       float y=model->rowCount();
+
+                       model->setQuery("select * from EMPLOYE where POSTE = 'Chef de service'");
+                       float w=model->rowCount();
+
+                       model->setQuery("select * from EMPLOYE where POSTE = 'Assistant(e)'");
+                       float z=model->rowCount();
+
+
+                       float total=x+y+w+z;
+                           QString a=QString("Ingenieur " +QString::number((x*100)/total,'f',2)+"%" );
+                           QString b=QString("Directeur " +QString::number((y*100)/total,'f',2)+"%" );
+                           QString c=QString("Chef de service " +QString::number((w*100)/total,'f',2)+"%" );
+                           QString d=QString("Assistant(e) " +QString::number((z*100)/total,'f',2)+"%" );
+
+                           QPieSeries *series = new QPieSeries();
+                           series->append(a,x);
+                           series->append(b,y);
+                           series->append(c,w);
+                           series->append(d,z);
+                       if (x!=0)
+                       {QPieSlice *slice = series->slices().at(0);
+                           slice->setLabelVisible();
+                           slice->setPen(QPen());
+                             slice->setColor(WHITENESS);
+                             slice->setLabelFont(QFont("Calibri",15));
+                             slice->setLabelColor(QColor(WHITENESS));
+                       }
+
+                       if ( y!=0)
+                       {QPieSlice *slice = series->slices().at(1);
+                           slice->setLabelVisible();
+                           slice->setPen(QPen());
+                            slice->setLabelFont(QFont("Calibri",15));
+                       }
+                       if (w!=0)
+                       {QPieSlice *slice = series->slices().at(2);
+                           slice->setLabelVisible();
+                           slice->setPen(QPen());
+                           slice->setLabelFont(QFont("Calibri",15));
+                           }
+
+                       if (z!=0)
+                       {QPieSlice *slice = series->slices().at(3);
+                           slice->setLabelVisible();
+                           slice->setPen(QPen());
+                           slice->setLabelFont(QFont("Calibri",15));
+                       slice->setColor(QColor(BLACK_BRUSH));}
+
+                       QChart *chart = new QChart();
+
+
+                       chart->addSeries(series);
+                       chart->setTitle("Pourcentage des postes à l'entreprise");
+                       chart->setTitleFont(QFont("Ariel",25));
+
+
+                       QChartView *chartView = new QChartView(chart);
+                       chartView->setRenderHint(QPainter::Antialiasing);
+                       chartView->resize(1500,900);
+                       chartView->show();
+}
+
+
+
+void MainWindow::on_pushButton_4_clicked()
+{
+ tache_a_faire t;
+ t.show();
 }

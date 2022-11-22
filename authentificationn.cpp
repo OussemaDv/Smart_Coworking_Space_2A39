@@ -2,8 +2,7 @@
 #include "ui_authentificationn.h"
 #include "employe.cpp"
 #include "employe.h"
-#include <mainwindow.h>
-#include <mainwindow.cpp>
+#include "mainwindow.h"
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QString>
