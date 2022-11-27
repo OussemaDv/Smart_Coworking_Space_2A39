@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "arduino.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,7 +12,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->mod_cin->setModel(a.get_id());
     ui->cin_qr->setModel(a.get_id());
     ui->cin_pdf->setModel(a.get_id());
-
+    //********************************************************************************************************
+    //conenxion arduino
+    int ret=ar.connect_arduino(); // lancer la connexion à arduino
+       switch(ret){
+       case(0):qDebug()<< "arduino is available and connected to : "<< ar.getarduino_port_name();
+           break;
+       case(1):qDebug() << "arduino is available but not connected to :" <<ar.getarduino_port_name();
+          break;
+       case(-1):qDebug() << "arduino is not available";
+       }
+        QObject::connect(ar.getserial(),SIGNAL(readyRead()),this,SLOT(readSerial())); // permet de lancer
+        //le slot update_label suite à la reception du signal readyRead (reception des données).
+    //********************************************************************************************************
     //email validator
     QRegExp email(valid_email);
     //chaine validator
@@ -398,4 +411,21 @@ void MainWindow::on_stat_clicked()
              chartView->setRenderHint(QPainter::Antialiasing);
              chartView->resize(1000,500);
              chartView->show();
+}
+
+void MainWindow::on_home_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_gestion1_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+    data=ar.read_from_arduino();
+    qDebug()<<data;
+    QMessageBox::information(nullptr, QObject::tr("ok"),QObject::tr(data), QMessageBox::Close);
+}
+
+void MainWindow::rfid(){
+
 }

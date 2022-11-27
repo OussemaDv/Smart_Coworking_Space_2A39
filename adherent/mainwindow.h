@@ -25,6 +25,7 @@
 #include "QZXing/QZXing.h"
 #include <QColor>
 #include "adherents.h"
+#include "arduino.h"
 
 using namespace std;
 
@@ -62,9 +63,15 @@ private slots:
     void on_photo_clicked();
     void on_aff_clicked();
     void on_stat_clicked();
+    void on_home_clicked();
+    void on_gestion1_clicked();
+
+    void rfid();
 
 private:
     Ui::MainWindow *ui;
     adherents a;
+    arduino ar;
+    QByteArray data;
 };
 #endif // MAINWINDOW_H

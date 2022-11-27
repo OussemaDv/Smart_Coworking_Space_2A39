@@ -2,7 +2,10 @@
 
 arduino::arduino()
 {
-
+    data="";
+    arduino_port_name="";
+    arduino_is_available=false;
+    serial=new QSerialPort;
 }
 
 int arduino::connect_arduino(){
@@ -54,4 +57,3 @@ void arduino::write_to_arduino(QByteArray d)
         qDebug() <<"couldnt write to serial";
     }
 }
-
