@@ -22,12 +22,14 @@
 #include <QChartView>
 #include <QColor>
 #include "tache_a_faire.h"
+#include "arduino.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ui->lineEdit->setValidator(new QIntValidator(0, 99999999, this));
        ui->lineEdit_2->setValidator(new QRegExpValidator(QRegExp("[A-z]*")));
        ui->lineEdit_3->setValidator(new QRegExpValidator(QRegExp("[A-z]*")));
@@ -280,3 +282,4 @@ void MainWindow::on_pushButton_4_clicked()
  tache_a_faire t;
  t.show();
 }
+

@@ -9,7 +9,7 @@
 #include <QMainWindow>
 #include <QSql>
 #include "tache_a_faire.h"
-
+#include "arduino.h"
 
 namespace Ui {
 class MainWindow;
@@ -47,11 +47,12 @@ private slots:
 
     void on_pushButton_4_clicked();
 
-
-
 private:
     Ui::MainWindow *ui;
     employe e;
+    arduino ar;
+   MainWindow *CRUD;
+    QByteArray data;
     tache_a_faire t;
 
     QListView* m_pwPending = nullptr;

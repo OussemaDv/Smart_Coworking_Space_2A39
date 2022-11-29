@@ -194,3 +194,14 @@ QSqlQueryModel* employe::rechercherID(QString recherche)
     model->setHeaderData(5,Qt::Horizontal,QObject::tr("ADRESSE_EMP"));
     return model;
 }
+QSqlQueryModel* employe::rechercherRFID(QString rfid)
+{
+QSqlQueryModel* model= new QSqlQueryModel();
+
+model->setQuery("SELECT* From EMPLOYE Where RFID LIKE '"+rfid+"'");
+return  model;
+
+
+
+
+}

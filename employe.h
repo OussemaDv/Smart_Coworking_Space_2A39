@@ -43,7 +43,7 @@ public:
     QSqlQueryModel * rechercher_id(int ID);
     QSqlQueryModel * rechercherID(QString recherche);
     QSqlQueryModel * rechercher_ID(QString rech,QString rech_1);
-
+    QSqlQueryModel * rechercherRFID(QString rfid);
 
 };
 

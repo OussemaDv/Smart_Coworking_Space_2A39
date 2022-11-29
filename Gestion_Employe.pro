@@ -1,13 +1,9 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2018-10-26T21:45:23
-#
-#-------------------------------------------------
 
+QT       += core gui serialport
 QT       += core gui sql
-QT += printsupport
+QT       += printsupport
 QT       += core gui charts
-QT += gui
+QT       += gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Atelier_Connexion
@@ -27,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    arduino.cpp \
     authentificationn.cpp \
     employe.cpp \
     main.cpp \
@@ -35,6 +32,7 @@ SOURCES += \
     tache_a_faire.cpp \
 
 HEADERS += \
+    arduino.h \
     authentificationn.h \
     employe.h \
     mainwindow.h \

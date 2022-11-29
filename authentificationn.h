@@ -7,6 +7,8 @@
 #include "employe.h"
 #include <QMainWindow>
 #include <QSql>
+#include <arduino.h>
+
 
 namespace Ui {
 class authentificationn;
@@ -22,9 +24,14 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+void rfid();
+void on_pushButton_2_clicked();
 
 private:
     Ui::authentificationn *ui;
+    arduino ar;
+    QByteArray data;
+
 };
 
 #endif // AUTHENTIFICATIONN_H

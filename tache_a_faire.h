@@ -21,6 +21,7 @@ protected slots:
     void onRemove();
 
 private:
+
     QListView* m_pwPending = nullptr;
     QListView* m_pwCompleted = nullptr;
 
