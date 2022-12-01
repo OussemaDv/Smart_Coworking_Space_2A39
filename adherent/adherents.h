@@ -48,6 +48,7 @@ QSqlQueryModel * tri_nom_decroissant();
 QSqlQueryModel * tri_prenom_croissant();
 QSqlQueryModel * tri_prenom_decroissant();
 QSqlQueryModel * get_id();
+QSqlQueryModel * recherche_rfid(QString);
 };
 
 #endif // ADHERENTS_H

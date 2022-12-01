@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     if(test)
     {
         w.show();
+        w.setWindowTitle("Smart WorkSpace");
         QMessageBox::information(nullptr,QObject::tr("databaseis open"),QObject::tr("connection successful.\n click Close to exit."),QMessageBox::Close);
     }
     else

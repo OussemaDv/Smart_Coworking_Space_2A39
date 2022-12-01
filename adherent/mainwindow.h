@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QRegExpValidator>
+#include <QTextCodec>
 #include <QPdfWriter>
 #include <QPainter>
 #include <QPrinter>
@@ -65,8 +66,7 @@ private slots:
     void on_stat_clicked();
     void on_home_clicked();
     void on_gestion1_clicked();
-
-    void rfid();
+    void dialog1();
 
 private:
     Ui::MainWindow *ui;

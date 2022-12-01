@@ -190,3 +190,9 @@ QSqlQueryModel * adherents::recherche_cin(QString cin)
 
     return model;
 }
+
+QSqlQueryModel * adherents::recherche_rfid(QString rfid){
+    QSqlQueryModel * model=new QSqlQueryModel();
+    model->setQuery("select * from adherent where rfid LIKE '"+rfid+"'");
+    return model;
+}

@@ -17,12 +17,13 @@ MainWindow::MainWindow(QWidget *parent)
     int ret=ar.connect_arduino(); // lancer la connexion à arduino
        switch(ret){
        case(0):qDebug()<< "arduino is available and connected to : "<< ar.getarduino_port_name();
+
            break;
        case(1):qDebug() << "arduino is available but not connected to :" <<ar.getarduino_port_name();
           break;
        case(-1):qDebug() << "arduino is not available";
        }
-        QObject::connect(ar.getserial(),SIGNAL(readyRead()),this,SLOT(readSerial())); // permet de lancer
+        QObject::connect(ar.getserial(),SIGNAL(readyRead()),this,SLOT(dialog1())); // permet de lancer
         //le slot update_label suite à la reception du signal readyRead (reception des données).
     //********************************************************************************************************
     //email validator
@@ -413,6 +414,36 @@ void MainWindow::on_stat_clicked()
              chartView->show();
 }
 
+void MainWindow::dialog1()
+{
+    data=ar.read_from_arduino();
+    qDebug()<<data;//affichage
+    if(a.recherche_rfid(data)->rowCount()!=0){
+        QString nom;
+        QSqlQuery qry;
+        qry.prepare("select * from adherent where rfid LIKE '"+data+"'");
+        if(qry.exec())
+        {
+            while(qry.next())
+            {
+                nom=qry.value(1).toString();
+            }
+        }
+        QByteArray esem(nom.toUtf8(),6);
+        qDebug()<<esem;//affichage
+        ar.write_to_arduino(esem);
+    }else{
+        ar.write_to_arduino("nexiste pas!");
+    }
+    /* //temperature
+    data=ar.read_from_arduino();
+    qDebug()<<data;//affichage
+    if(data=="1"){
+        QMessageBox::information(nullptr, QObject::tr("Warning !"),QObject::tr("danger fumée"), QMessageBox::Close);
+    }
+    */
+}
+
 void MainWindow::on_home_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
@@ -421,11 +452,4 @@ void MainWindow::on_home_clicked()
 void MainWindow::on_gestion1_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
-    data=ar.read_from_arduino();
-    qDebug()<<data;
-    QMessageBox::information(nullptr, QObject::tr("ok"),QObject::tr(data), QMessageBox::Close);
-}
-
-void MainWindow::rfid(){
-
 }
