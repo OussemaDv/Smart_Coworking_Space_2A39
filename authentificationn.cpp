@@ -84,6 +84,7 @@ void authentificationn::rfid()
     }
                QByteArray name(nom.toUtf8(),6);
                qDebug()<<name;
+
                ar.write_to_arduino(name);
 
 }else{
