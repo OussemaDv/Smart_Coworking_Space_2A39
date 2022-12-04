@@ -29,23 +29,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     adherents.cpp \
     arduino.cpp \
+    calculatrice.cpp \
     connexion.cpp \
     employe.cpp \
     login.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    reservation.cpp \
 
 HEADERS += \
     adherents.h \
     arduino.h \
+    calculatrice.h \
     connexion.h \
     employe.h \
     login.h \
-    mainwindow.h
+    mainwindow.h \
+    reservation.h \
 
 FORMS += \
+    calculatrice.ui \
     login.ui \
-    mainwindow.ui
+    mainwindow.ui  \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

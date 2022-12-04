@@ -1,12 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "arduino.h"
-
+#include "calculatrice.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+ui->tab_reservation_2->setModel(R.afficher());
     ui->tableView->setModel(a.afficher());
     ui->cin_supp->setModel(a.get_id());
     ui->mod_cin->setModel(a.get_id());
@@ -267,7 +268,7 @@ void MainWindow::on_cin_pdf_currentIndexChanged()
 
     QSqlQueryModel * info=new QSqlQueryModel();
 
-    info->setQuery("select * from adherent where cin LIKE '"+cin+"'");
+    info->setQuery("select * from adherent where cin '"+cin+"'");
 
     info->setHeaderData(0,Qt::Horizontal,QObject::tr("Cin"));
     info->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom"));
@@ -482,8 +483,8 @@ void MainWindow::on_gestion4_clicked()
 }
 
 void MainWindow::on_gestion5_clicked()
-{
-
+{//gestion reservation "a ne pas toucher"
+ui->stackedWidget->setCurrentIndex(5);
 }
 
 void MainWindow::on_gestion6_clicked()
@@ -723,5 +724,286 @@ void MainWindow::on_sta_pb_clicked()
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     chartView->resize(1500,900);
+    chartView->show();
+}
+
+void MainWindow::on_pb_ajouter_res_clicked()
+{//boutton ajouter reservation
+    if ((ui->lineEdit_CIN_3->text().isEmpty())or(ui->lineEdit_resID_3->text().isEmpty())or( ui->lineEdit_poste_3->text().isEmpty()))
+        {
+            QMessageBox::information(nullptr,QObject::tr("not ok"),QObject::tr("missing details\n""click to Cancel to exit."), QMessageBox::Cancel);
+
+        }
+        else{
+        int resID=ui->lineEdit_resID_3->text().toInt();
+        QDate datte=ui->lineEdit_datte_3->date();
+        int CIN=ui->lineEdit_CIN_3->text().toUInt();
+        int poste=ui->lineEdit_poste_3->text().toUInt();
+
+
+
+        Reservation R(CIN,resID,poste,datte);
+        bool test=R.ajouter();
+                if (test)
+        {QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("ajout effectué\n""click to Cancel to exit."), QMessageBox::Cancel);
+                ui->tab_reservation_2->setModel(R.afficher());
+                ui->lineEdit_resID_3->clear();
+                ui->lineEdit_datte_3->clear();
+                ui->lineEdit_poste_3->clear();
+                ui->lineEdit_CIN_3->clear();   }
+                    else
+                {QMessageBox::critical(nullptr, QObject::tr("not ok"),QObject::tr("ajout non effectué.\n" "click to cancel to exit."),QMessageBox::Cancel);}
+
+                    }
+}
+
+void MainWindow::on_pb_reload_2_clicked()
+{// reload affichage reservation tableau
+    ui->tab_reservation_2->setModel(R.afficher());
+    ui->lineEdit_recherer_2->clear();
+}
+
+
+
+void MainWindow::on_pushButton_supprimer_2_clicked()
+{//push boutton suprimier une reservation selon id
+    Reservation R1;
+    if (ui->lineEdit_resID_supp_3->text().isEmpty())
+        {
+            QMessageBox::information(nullptr,QObject::tr("not ok"),QObject::tr("missing details\n""click to Cancel to exit."), QMessageBox::Cancel);
+
+        }
+        else{
+
+        int id=ui->lineEdit_resID_supp_3->text().toInt();
+        QString recherche=ui->lineEdit_resID_supp_3->text();
+
+
+
+        if (R1.recherche_resID(recherche)->rowCount()!=0 and recherche.length()!=0)
+
+        {
+
+            bool test=R1.supprimer(id);
+    if (test){ui->tab_reservation_2->setModel(R.afficher());
+           QMessageBox::information(nullptr, QObject::tr("Succès"),
+
+        QObject::tr("Suppression effectué.\n"
+
+          "Cliquer sur Cancel to exit."), QMessageBox::Cancel);
+
+          }
+
+          else
+
+              {QMessageBox::critical(nullptr, QObject::tr("ERREUR"),
+
+                                    QObject::tr("Suppression non effectué !\n"
+
+                                      "Cliquer sur Cancel to exit."), QMessageBox::Cancel);}
+    ui->lineEdit_resID_supp_3->clear();
+    ui->lineEdit_modResID_2->clear();
+    ui->lineEdit_modDatte_2->clear();
+    ui->lineEdit_modposte_2->clear();
+    ui->lineEdit_modCIN_2->clear();
+} else
+           { QMessageBox::critical(nullptr, QObject::tr("ERREUR"),
+
+                                                 QObject::tr("Suppression non effectué il ne !\n"
+
+                                                   "Cliquer sur Cancel to exit."), QMessageBox::Cancel);}
+               ui->lineEdit_resID_supp_3->clear();
+             ui->lineEdit_modResID_2->clear();
+             ui->lineEdit_modDatte_2->clear();
+             ui->lineEdit_modposte_2->clear();
+             ui->lineEdit_modCIN_2->clear();
+           ui->tab_reservation_2->setModel(R.afficher());
+
+}
+}
+
+
+
+
+void MainWindow::on_rechercher_pb_2_clicked()
+{// rechercher selo le CIN
+    if (ui->lineEdit_recherer_2->text().isEmpty())
+        {
+            QMessageBox::information(nullptr,QObject::tr("not ok"),QObject::tr("missing details\n""click to Cancel to exit."), QMessageBox::Cancel);
+
+        }
+        else{
+        QString val = ui->lineEdit_recherer_2->text();
+       ui->tab_reservation_2->setModel(R.recherche_CIN(val));
+}}
+
+
+void MainWindow::on_pb_tri_resID_d_2_clicked()
+{//trix decroissant selon les resID de reservation
+     ui->tab_reservation_2->setModel(R.tri_resID_d());
+}
+
+
+void MainWindow::on_pb_trier_CIN_d_2_clicked()
+{//trix decroissant selon les cin de reservation
+    ui->tab_reservation_2->setModel(R.tri_CIN_d());
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{//trix croissant selon les resID de reservation
+     ui->tab_reservation_2->setModel(R.tri_resID());
+}
+
+void MainWindow::on_pb_tri_CIN_2_clicked()
+{//trix croissant selon les cin de reservation
+    ui->tab_reservation_2->setModel(R.tri_CIN());
+}
+
+void MainWindow::on_pb_datte_c_2_clicked()
+{//trix croisson selon les date de reservation
+    ui->tab_reservation_2->setModel(R.tri_date_c());
+}
+
+
+void MainWindow::on_pb_datte_d_2_clicked()
+{//trix decroissant selon les date de reservation
+    ui->tab_reservation_2->setModel(R.tri_date_d());
+}
+
+void MainWindow::on_tab_reservation_2_activated(const QModelIndex &index)
+{// click sur une reservation dans le tableau -> les afficher sur tout les line edit
+    QString val=ui->tab_reservation_2->model()->data(index).toString();
+    QSqlQuery qry;
+    qry.prepare("select * from reservation where resID LIKE '"+val+"'");
+
+    if (qry.exec()){
+ while (qry.next())
+ {ui->lineEdit_modResID_2->setText(qry.value(0).toString());
+ ui->lineEdit_modCIN_2->setText(qry.value(1).toString());
+ ui->lineEdit_modposte_2->setText(qry.value(2).toString());
+ ui->lineEdit_modDatte_2->setDate(qry.value(3).toDate());
+ ui->lineEdit_resID_supp_3->setText(qry.value(0).toString());
+ }
+ }
+    else {QMessageBox::critical(nullptr, QObject::tr("not done"),QObject::tr("echec affichage.\n" "click to cancel to exit."),QMessageBox::Cancel);}
+}
+
+
+void MainWindow::on_calendar_2_clicked(const QDate &date)
+{
+    ui->tableView_agenda_2->setModel(R.recherche_datte(date));
+            /*QTableView tableView // il n'affiche pas une nouvelle fenetre jsp pk
+                 tableView.setModel(R.recherche_datte(date));
+                 tableView.show();*/
+}
+
+void MainWindow::on_pb_calculatrice_clicked()
+{//afficher la calculatrice  dans une fenetre
+
+    calculatrice c;
+    c.exec();
+}
+
+void MainWindow::on_pb_pdf_reservation_clicked()
+{//generer un pdf pour reservation
+    QPdfWriter pdf("C:/Users/ahmed/Desktop/stat_reservation.pdf");
+
+        QPainter painter(&pdf);
+        int i = 4100;
+
+
+               QColor dateColor(0x4a5bcf);
+               painter.setPen(dateColor);
+
+               painter.setFont(QFont("Montserrat SemiBold", 11));
+               QDate cd = QDate::currentDate();
+               painter.drawText(8400,250,cd.toString("Tunis"));
+               painter.drawText(8100,500,cd.toString("dd/MM/yyyy"));
+
+               QColor titleColor(0x341763);
+               painter.setPen(titleColor);
+               painter.setFont(QFont("Montserrat SemiBold", 25));
+
+               painter.drawText(3000,2700,"Liste des reservation");
+
+               painter.setPen(Qt::black);
+               painter.setFont(QFont("Time New Roman", 15));
+
+               painter.drawRect(100,3300,9400,500);
+
+               painter.setFont(QFont("Montserrat SemiBold", 10));
+
+               painter.drawText(1875,3600,"resID");
+               painter.drawText(3750,3600,"CIN");
+               painter.drawText(5625,3600,"poste");
+                painter.drawText(7500,3600,"date");
+
+
+
+               painter.setFont(QFont("Montserrat", 10));
+               painter.drawRect(100,3300,9400,9000);
+
+               QSqlQuery query;
+               query.prepare("select * from reservation");
+               query.exec();
+               int y=4300;
+               while (query.next())
+               {
+                   painter.drawLine(100,y,9490,y);
+                   y+=500;
+                   painter.drawText(1875,i,query.value(0).toString());
+                   painter.drawText(3750,i,query.value(1).toString());
+                   painter.drawText(5625,i,query.value(2).toString());
+                   painter.drawText(7500,i,query.value(3).toString());
+
+
+
+                  i = i + 500;
+               }
+               QMessageBox::information( nullptr, tr( "pdf" ), tr( "pdf generer!\n\n" ) );
+}
+
+
+void MainWindow::on_pb_stat_reservation_clicked()
+{// afficher les stat selon les semestre
+    QSqlQueryModel * model= new QSqlQueryModel();
+    model->setQuery("SELECT * FROM reservation WHERE extract(month from datte) BETWEEN 1 AND 6 ");
+    int number1=model->rowCount(); //calculer la somme des adherent de genre male
+    model->setQuery("SELECT * FROM reservation WHERE extract(month from datte) BETWEEN 7 AND 12 ");
+    int number2=model->rowCount(); //calculer la somme des adherent de genre female
+
+    //nombre des male*100/nombre des genres
+    int total=number1+number2;
+    QString a = QString("semstre 1 est de  "+QString::number((number1*100)/total,'f',2)+"%");
+    QString b = QString("semestre 2 est de  "+QString::number((number2*100)/total,'f',2)+"%");
+
+    //charte pie style
+    QPieSeries *series = new QPieSeries();
+    series->append(a,number1); //te9sem charte graphique
+    series->append(b,number2);
+
+    if (number1!= 0)
+    {
+        //partie 1 de cercle
+        QPieSlice *slice = series->slices().at(0);
+        //affichage de pourcantage
+        slice->setLabelVisible();
+    }
+    if (number2!=0)
+    {
+        //partie 2 de cercle
+        QPieSlice *slice1 = series->slices().at(1);
+        //affichage de pourcantage
+        slice1->setLabelVisible();
+    }
+    //Create the chart widget
+    QChart *chart = new QChart();
+    //ajout des donnee et titre
+    chart->addSeries(series);
+    chart->setTitle("Pourcentage des reservation selon semstre");
+    //afficher le charte avec sa parametre de taille
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->resize(1000,500);
     chartView->show();
 }

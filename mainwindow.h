@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include "reservation.h"
 #include <iostream>
 #include <string>
 #include <QSqlDatabase>
@@ -51,6 +52,7 @@ public:
 
 
 private slots:
+
     void on_ajouter_clicked();
     void on_supprimer_clicked();
     void on_modifier_clicked();
@@ -84,16 +86,54 @@ private slots:
     void on_pb_pdf_clicked();
     void on_sta_pb_clicked();
 
+    void on_pb_ajouter_res_clicked();
+
+    void on_pb_reload_2_clicked();
+
+    void on_pushButton_supprimer_2_clicked();
+
+    void on_rechercher_pb_2_clicked();
+
+    void on_pb_tri_resID_d_2_clicked();
+
+    void on_pb_trier_CIN_d_2_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_pb_tri_CIN_2_clicked();
+
+    void on_pb_datte_c_2_clicked();
+
+    void on_pb_datte_d_2_clicked();
+
+    void on_tab_reservation_2_activated(const QModelIndex &index);
+
+
+
+    void on_calendar_2_clicked(const QDate &date);
+    void on_pb_calculatrice_clicked();
+
+    void on_pb_pdf_reservation_clicked();
+
+
+
+    void on_pb_stat_reservation_clicked();
+
 private:
     Ui::MainWindow *ui;
+
     adherents a;
     arduino ar;
     QByteArray data;
+    Reservation R;
     employe e;
     QListView* m_pwPending = nullptr;
     QListView* m_pwCompleted = nullptr;
 
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
+
+
+
 };
 #endif // MAINWINDOW_H

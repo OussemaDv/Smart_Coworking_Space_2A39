@@ -285,7 +285,7 @@ background-repeat: none;
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="Home">
      <widget class="QTextBrowser" name="textBrowser">
@@ -335,7 +335,7 @@ color:#ffffff;
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="Ajouter">
        <property name="styleSheet">
@@ -1473,7 +1473,7 @@ color:#ffffff;
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="Ajouter_2">
        <property name="styleSheet">
@@ -2069,6 +2069,778 @@ font:bold;</string>
       </widget>
      </widget>
     </widget>
+    <widget class="QWidget" name="gestion_espace"/>
+    <widget class="QWidget" name="gestion_materiel"/>
+    <widget class="QWidget" name="gestion_reservation">
+     <widget class="QTabWidget" name="gestion5_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>791</width>
+        <height>451</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#gestion5_2 {
+    font: bold 14px;
+	color:#32303D;
+	border-radius:12px;
+}
+QTabBar::tab:selected, QTabBar::tab:hover{
+background: #32303D;
+color:#ffffff;
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="ajouter_res">
+       <attribute name="title">
+        <string>ajouter</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>311</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <widget class="QLabel" name="label_44">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>resID</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_resID_3">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="pb_ajouter_res">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>130</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_ajouter_res{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>Ajouter</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_13">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>160</y>
+          <width>311</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_17">
+         <item>
+          <widget class="QLabel" name="label_45">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>date</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="lineEdit_datte_3">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_14">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>220</y>
+          <width>311</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_18">
+         <item>
+          <widget class="QLabel" name="label_46">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>poste</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_poste_3">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_15">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>311</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_19">
+         <item>
+          <widget class="QLabel" name="label_47">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>CIN</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_CIN_3">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="afficher_res">
+       <attribute name="title">
+        <string>afficher </string>
+       </attribute>
+       <widget class="QTableView" name="tab_reservation_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>611</width>
+          <height>261</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_trier_CIN_d_2">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>310</y>
+          <width>121</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_trier_CIN_d_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>trier selon CIN - </string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_tri_CIN_2">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>310</y>
+          <width>131</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_tri_CIN_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>trier selon CIN +</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_reload_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>270</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_reload_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>reload</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_16">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>310</y>
+          <width>292</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_20">
+         <item>
+          <widget class="QLineEdit" name="lineEdit_recherer_2">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="rechercher_pb_2">
+           <property name="styleSheet">
+            <string notr="true">#rechercher_pb_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+           </property>
+           <property name="text">
+            <string>rechercher  via CIN</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>270</y>
+          <width>141</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pushButton_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>trier selon resID + </string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_datte_c_2">
+        <property name="geometry">
+         <rect>
+          <x>630</x>
+          <y>270</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_datte_c_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>datte +</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_datte_d_2">
+        <property name="geometry">
+         <rect>
+          <x>630</x>
+          <y>310</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_datte_d_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>datte -</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_tri_resID_d_2">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>270</y>
+          <width>141</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_tri_resID_d_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>trier selon resID -</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_calculatrice">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>270</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_calculatrice{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>calculatrice</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_pdf_reservation">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>50</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_pdf_reservation{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>pdf</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pb_stat_reservation">
+        <property name="geometry">
+         <rect>
+          <x>650</x>
+          <y>100</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_stat_reservation{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>stat</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="modifier_mod">
+       <attribute name="title">
+        <string>modifier</string>
+       </attribute>
+       <widget class="QWidget" name="layoutWidget_18">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>231</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_23">
+         <item>
+          <widget class="QLabel" name="label_50">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>resID</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_modResID_2">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_19">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>231</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_24">
+         <item>
+          <widget class="QLabel" name="label_51">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>poste</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_modposte_2">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="pb_modifier_2">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>110</y>
+          <width>93</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pb_modifier_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>modifier</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_20">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>231</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_25">
+         <item>
+          <widget class="QLabel" name="label_52">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>CIN</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_modCIN_2">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_21">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>133</y>
+          <width>231</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_26">
+         <item>
+          <widget class="QLabel" name="label_53">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>date</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="lineEdit_modDatte_2">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="modifier_sup">
+       <attribute name="title">
+        <string>supprimer</string>
+       </attribute>
+       <widget class="QPushButton" name="pushButton_supprimer_2">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>97</y>
+          <width>93</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#pushButton_supprimer_2{
+    background-color: #32303D;
+    border-style: outset;
+    border-width: 1px;
+    font: bold 14px;
+    color:#ffffff;
+    padding: 2px;
+	border-radius:6px;
+}</string>
+        </property>
+        <property name="text">
+         <string>supprimer</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_17">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>211</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_22">
+         <item>
+          <widget class="QLabel" name="label_49">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(0, 0, 0);
+font-size: 13px;
+font:bold;</string>
+           </property>
+           <property name="text">
+            <string>resID</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_resID_supp_3">
+           <property name="styleSheet">
+            <string notr="true">border: 1px solid;
+border-radius: 5px;
+padding: 1px 18px 1px 3px;
+min-width: 6em;
+color: rgb(0, 0, 0);
+font-size: 12px;
+font:bold;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="calendrier">
+       <attribute name="title">
+        <string>calendrier</string>
+       </attribute>
+       <widget class="QTableView" name="tableView_agenda_2">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>220</y>
+          <width>601</width>
+          <height>181</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QCalendarWidget" name="calendar_2">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>10</y>
+          <width>301</width>
+          <height>191</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="gestion_service"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
