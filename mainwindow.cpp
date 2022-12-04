@@ -580,13 +580,12 @@ void MainWindow::on_pb_supprimer_clicked()
 {
     int ID=ui->lineEdit_id_supp->text().toInt();
     QString recherche=ui->lineEdit_id_supp->text();
-    bool test=e.supprimer_emp(ID);
+   
 
     if (e.rechercherID_emp(recherche)->rowCount()!=0 and recherche.length()!=0)
     {
-        if(test)
-        {
-            QMessageBox::information(nullptr, QObject::tr("Succès"),
+        bool test=e.supprimer_emp(ID);
+  QMessageBox::information(nullptr, QObject::tr("Succès"),
                                      QObject::tr("Suppression effectué.\n"
                                                  "Cliquer sur Cancel to exit."), QMessageBox::Cancel);
         }
@@ -596,9 +595,6 @@ void MainWindow::on_pb_supprimer_clicked()
                                   QObject::tr("Suppression non effectué !\n"
                                               "Cliquer sur Cancel to exit."), QMessageBox::Cancel);
         }
-    }
-
-
 
     ui->tab_employe->setModel(e.afficher_emp());
     ui->lineEdit_id_supp->clear();
