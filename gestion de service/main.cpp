@@ -1,26 +1,27 @@
 #include "mainwindow.h"
+#include "login.h"
+#include "connexion.h"
 #include <QApplication>
 #include <QMessageBox>
-#include "connection.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Connection c;
-    bool test=c.createconnect();//etablir la connexion
+    connection c;
+
+    bool test=c.createconnection();
     MainWindow w;
+    login l;
+
     if(test)
-    { w.show();
-        QMessageBox::information(nullptr, QObject::tr("database is open"),
-                    QObject::tr("connection successful.\n"
-                                "Click Cancel to exit."), QMessageBox::Cancel);
-
-}
+    {
+        w.show();
+        w.setWindowTitle("Smart WorkSpace");
+        QMessageBox::information(nullptr,QObject::tr("databaseis open"),QObject::tr("connection successful.\n click Close to exit."),QMessageBox::Close);
+    }
     else
-        QMessageBox::critical(nullptr, QObject::tr("database is not open"),
-                    QObject::tr("connection failed.\n"
-                                "Click Cancel to exit."), QMessageBox::Cancel);
-
-
-
+    {
+        QMessageBox::critical(nullptr,QObject::tr("database is not open"),QObject::tr("connection failed.\n click Close to exit."),QMessageBox::Close);
+    }
     return a.exec();
 }
