@@ -11,15 +11,17 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     MainWindow w;
-    tache_a_faire t;
+   tache_a_faire t;
     authentificationn u;
     Connection c;
 
     bool test=c.createconnect();
     if(test)
-    {//w.show();
-       // t.show();
+    {
         u.show();
+        //w.show();
+        //t.show();
+
         QMessageBox::information(nullptr, QObject::tr("database is open"),
                     QObject::tr("connection successful.\n"
                                 "Click Cancel to exit."), QMessageBox::Cancel);
