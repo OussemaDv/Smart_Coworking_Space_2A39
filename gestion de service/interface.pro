@@ -33,9 +33,13 @@ SOURCES += \
     arduino.cpp \
     calculatrice.cpp \
     catalogue.cpp \
+    chatclient.cpp \
+    chatserver.cpp \
+    chatwindow.cpp \
     connexion.cpp \
     dialog.cpp \
     employe.cpp \
+    espace.cpp \
     exportexcelobject.cpp \
     login.cpp \
     main.cpp \
@@ -43,6 +47,8 @@ SOURCES += \
     map.cpp \
     materiels.cpp \
     reservation.cpp \
+    serverwindow.cpp \
+    serverworker.cpp \
     smtp.cpp
 
 HEADERS += \
@@ -52,15 +58,21 @@ HEADERS += \
     arduino.h \
     calculatrice.h \
     catalogue.h \
+    chatclient.h \
+    chatserver.h \
+    chatwindow.h \
     connexion.h \
     dialog.h \
     employe.h \
+    espace.h \
     exportexcelobject.h \
     login.h \
     mainwindow.h \
     map.h \
     materiels.h \
     reservation.h \
+    serverwindow.h \
+    serverworker.h \
     smtp.h \
     webaxwidget.h
 
@@ -68,10 +80,12 @@ FORMS += \
     Detecteur.ui \
     calculatrice.ui \
     catalogue.ui \
+    chatwindow.ui \
     dialog.ui \
     login.ui \
     mainwindow.ui  \
-    map.ui
+    map.ui \
+    serverwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

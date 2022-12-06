@@ -157,6 +157,41 @@ ui->tab_reservation_2->setModel(R.afficher());
        ui->tab->setModel(M.afficher());
        //
 
+    //*******************Espace*************************
+       ui->tableAffich->setModel(Esp.afficher());
+       ui->tableAffich->setSortingEnabled(true);
+       ui->comboMap->setModel(Esp.afficher2());
+       ui->combo_modifEsp->setModel(Esp.afficher2());
+       ui->tableView->setModel(Esp.afficher3());
+       ui->tableView->setSortingEnabled(true);
+       setBusyList();
+       setFreeList();
+       ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+       for(int i=0;i<(ui->tableAffich->model()->rowCount());i++)
+       {
+           QGraphicsScene *scene = new QGraphicsScene;
+           QVector <QGraphicsPixmapItem*> vector;
+           int n=ui->tableAffich->model()->index(i,1).data().toInt();
+           for(int j=0;j<n;j++)
+           {
+               QGraphicsPixmapItem* pic;
+               QPixmap pix(free_list[j]);
+               pic = scene->addPixmap(pix);
+               pic->setFlag(QGraphicsItem::ItemIsMovable);
+               pic->setFlag(QGraphicsItem::ItemIsSelectable);
+               vector.push_back(pic);
+           }
+           scene_list.push_back(scene);
+           pic_list.push_back(vector);
+       }
+
+       ui->graphicsView_map->setScene(scene_list[0]);
+
+       //statistique();
+       //statSalle();
+
+      statSalle();
+      statPlace();
 
 }
 
@@ -584,7 +619,7 @@ ui->stackedWidget->setCurrentIndex(5);
 
 void MainWindow::on_gestion6_clicked()
 {
-
+ui->stackedWidget->setCurrentIndex(6);
 }
 
 void MainWindow::on_ajout_emp_clicked()
@@ -1502,3 +1537,829 @@ void MainWindow::on_bexcel_clicked()
 
 
 //
+
+void MainWindow::on_pbAjoutEsp_clicked()
+{
+    int id=ui->id_ajoutEsp->text().toInt();
+    int nb=ui->nb_ajoutEsp->text().toInt();
+    QString bloc=ui->bloc_ajoutEsp->text();
+    QDate date=ui->date_ajoutEsp->date();
+
+    espace e(id,nb,bloc,date);
+
+    bool test=e.ajouter();
+
+    if(test)
+    {
+        ui->tableAffich->setModel(Esp.afficher());
+        ui->combo_modifEsp->setModel(Esp.afficher2());
+        ui->comboMap->setModel(Esp.afficher2());
+        QGraphicsScene *scene = new QGraphicsScene;
+        QVector<QGraphicsPixmapItem*> vector;
+        for(int i=0;i<Esp.getNb();i++)
+        {
+            QPixmap pix(free_list[i]);
+            QGraphicsPixmapItem *pic;
+            pic = scene->addPixmap(pix);
+            vector.push_back(pic);
+        }
+        ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+        int index;
+        for(index = 0;index<ui->tableAffich->model()->rowCount();index++)
+        {
+            if(ui->tableAffich->model()->index(index,0).data().toInt() == index)
+                break;
+        }
+        qDebug() << "done";
+        pic_list.insert(pic_list.begin()+index,vector);
+        scene_list.insert(scene_list.begin()+index,scene);
+
+        //chartview = statSalle();
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Ajout effectue\n"
+                                             "Click Cancel to exit."), QMessageBox::Ok);
+        ui->id_ajoutEsp->clear();
+        ui->nb_ajoutEsp->clear();
+        ui->bloc_ajoutEsp->clear();
+    }
+
+}
+void MainWindow::statistique()
+{
+    QBarSet *set0 = new QBarSet("bloc a");
+    QBarSet *set1 = new QBarSet("bloc b");
+    QBarSet *set2 = new QBarSet("bloc c");
+    QBarSet *set3 = new QBarSet("bloc d");
+
+    *set0 << 30;
+    *set1 << 40;
+    *set2 << 60;
+    *set3 << 40;
+
+    QBarSet *set02 = new QBarSet("bloc ;");
+    QBarSet *set12 = new QBarSet("bloc j");
+    QBarSet *set22 = new QBarSet("bloc i");
+    QBarSet *set32 = new QBarSet("bloc d");
+
+    *set02 << 70;
+    *set12 << 56;
+    *set22 << 50;
+    *set32 << 58;
+
+    QBarSeries *series = new QBarSeries();
+    series->append(set0);
+    series->append(set1);
+    series->append(set2);
+    series->append(set3);
+
+    QBarSeries *series2 = new QBarSeries();
+    series2->append(set02);
+    series2->append(set12);
+    series2->append(set22);
+    series2->append(set32);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("nombre de salle selon bloc");
+
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QChart *chart2 = new QChart();
+    chart2->addSeries(series2);
+    chart2->setTitle("nombre de salle selon bloc");
+
+
+
+    QChartView *chartView = new QChartView(chart);
+    QChartView *chartView2 = new QChartView(chart2);
+
+    //chartView->setParent(ui->horizontalFrame);
+    //chartView2->setParent(ui->horizontalFrame_2);
+}
+
+QChart * MainWindow::statSalle()
+{
+    QMap <QChar,int> blocs;
+    bool exist=false;
+    //qDebug() << ui->tableAffich->model()->rowCount();
+    for(int i=0;i<ui->tableAffich->model()->rowCount();i++)
+    {
+        QMap<QChar,int>::iterator it;
+        for(it=blocs.begin();it!=blocs.end();++it)
+        {
+            if(ui->tableAffich->model()->index(i,2).data().toString()[0]==it.key())
+                exist = true;
+        }
+        if(exist)
+        {
+            blocs[ui->tableAffich->model()->index(i,2).data().toString()[0]]++;
+            exist = false;
+        }
+        else
+        {
+            QChar ch= ui->tableAffich->model()->index(i,2).data().toString()[0];
+            blocs.insert(ch,1);
+        }
+    }
+    //QChar ch= ui->tableAffich->model()->index(0,2).data().toString()[0];
+    int salles=0;
+    QMap<QChar,int>::iterator it;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        salles+=it.value();
+    }
+
+    QVector<QBarSet*> sets;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        float stat;
+        stat = (it.value()*100/salles);
+        qDebug() << stat;
+        QBarSet *set = new QBarSet(QString(it.key()));
+        *set << stat;
+        sets.push_back(set);
+    }
+
+    QBarSeries *series = new QBarSeries();
+
+    for(int i=0;i<sets.size();i++)
+    {
+        series->append(sets[i]);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Pourcentage de salles par bloc.");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    //QBarCategoryAxis *axis = new QBarCategoryAxis();
+    chart->createDefaultAxes();
+    QChartView *chartView = new QChartView(chart);
+    chartView->setParent(ui->horizontalFrame_salles);
+
+    return chart;
+}
+
+QChart * MainWindow::statPlace()
+{
+    QMap <QChar,int> blocs;
+    bool exist=false;
+    //qDebug() << ui->tableAffich->model()->rowCount();
+    for(int i=0;i<ui->tableAffich->model()->rowCount();i++)
+    {
+        QMap<QChar,int>::iterator it;
+        for(it=blocs.begin();it!=blocs.end();++it)
+        {
+            if(ui->tableAffich->model()->index(i,2).data().toString()[0]==it.key())
+                exist = true;
+        }
+        if(exist)
+        {
+            blocs[ui->tableAffich->model()->index(i,2).data().toString()[0]]+=ui->tableAffich->model()->index(i,1).data().toInt();
+            exist = false;
+        }
+        else
+        {
+            QChar ch= ui->tableAffich->model()->index(i,2).data().toString()[0];
+            blocs.insert(ch,ui->tableAffich->model()->index(i,1).data().toInt());
+        }
+    }
+    //QChar ch= ui->tableAffich->model()->index(0,2).data().toString()[0];
+    int places=0;
+    QMap<QChar,int>::iterator it;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        places+=it.value();
+    }
+
+    QVector<QBarSet*> sets;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        float stat;
+        stat = (it.value()*100/places);
+        qDebug() << stat;
+        QBarSet *set = new QBarSet(QString(it.key()));
+        *set << stat;
+        sets.push_back(set);
+    }
+
+    QBarSeries *series = new QBarSeries();
+
+    for(int i=0;i<sets.size();i++)
+    {
+        series->append(sets[i]);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Pourcentage de places par bloc.");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    //QBarCategoryAxis *axis = new QBarCategoryAxis();
+    chart->createDefaultAxes();
+    QChartView *chartView = new QChartView(chart);
+    chartView->setParent(ui->horizontalFrame_places);
+
+    return chart;
+}
+
+void MainWindow::setBusyList()
+{
+    QString const pix1_busy =":/busy/busy/1.png";
+    QString const pix2_busy  =":/busy/busy/2.png";
+    QString const pix3_busy  =":/busy/busy/3.png";
+    QString const pix4_busy  =":/busy/busy/4.png";
+    QString const pix5_busy =":/busy/busy/5.png";
+    QString const pix6_busy =":/busy/busy/6.png";
+    QString const pix7_busy =":/busy/busy/7.png";
+    QString const pix8_busy =":/busy/busy/8.png";
+    QString const pix9_busy =":/busy/busy/9.png";
+    QString const pix10_busy =":/busy/busy/10.png";
+    QString const pix11_busy =":/busy/busy/11.png";
+    QString const pix12_busy =":/busy/busy/12.png";
+    QString const pix13_busy =":/busy/busy/13.png";
+    QString const pix14_busy =":/busy/busy/14.png";
+    QString const pix15_busy =":/busy/busy/15.png";
+    QString const pix16_busy =":/busy/busy/16.png";
+    QString const pix17_busy =":/busy/busy/17.png";
+    QString const pix18_busy =":/busy/busy/18.png";
+    QString const pix19_busy =":/busy/busy/19.png";
+    QString const pix20_busy =":/busy/busy/20.png";
+    QString const pix21_busy =":/busy/busy/21.png";
+    QString const pix22_busy =":/busy/busy/22.png";
+    QString const pix23_busy =":/busy/busy/23.png";
+    QString const pix24_busy =":/busy/busy/24.png";
+    QString const pix25_busy =":/busy/busy/25.png";
+    QString const pix26_busy =":/busy/busy/26.png";
+    QString const pix27_busy =":/busy/busy/27.png";
+    QString const pix28_busy =":/busy/busy/28.png";
+    QString const pix29_busy =":/busy/busy/29.png";
+    QString const pix30_busy =":/busy/busy/30.png";
+
+
+    busy_list.push_back(pix1_busy);
+    busy_list.push_back(pix2_busy);
+    busy_list.push_back(pix3_busy);
+    busy_list.push_back(pix4_busy);
+    busy_list.push_back(pix5_busy);
+    busy_list.push_back(pix6_busy);
+    busy_list.push_back(pix8_busy);
+    busy_list.push_back(pix9_busy);
+    busy_list.push_back(pix10_busy);
+    busy_list.push_back(pix12_busy);
+    busy_list.push_back(pix13_busy);
+    busy_list.push_back(pix14_busy);
+    busy_list.push_back(pix15_busy);
+    busy_list.push_back(pix16_busy);
+    busy_list.push_back(pix17_busy);
+    busy_list.push_back(pix18_busy);
+    busy_list.push_back(pix19_busy);
+    busy_list.push_back(pix20_busy);
+    busy_list.push_back(pix21_busy);
+    busy_list.push_back(pix22_busy);
+    busy_list.push_back(pix23_busy);
+    busy_list.push_back(pix24_busy);
+    busy_list.push_back(pix25_busy);
+    busy_list.push_back(pix26_busy);
+    busy_list.push_back(pix27_busy);
+    busy_list.push_back(pix28_busy);
+    busy_list.push_back(pix29_busy);
+    busy_list.push_back(pix30_busy);
+}
+
+void MainWindow::setFreeList()
+{
+    QString const pix1_free = ":/free/free/1.png";
+    QString const pix2_free =":/free/free/2.png";
+    QString const pix3_free=":/free/free/3.png";
+    QString const pix4_free =":/free/free/4.png";
+    QString const pix5_free =":/free/free/5.png";
+    QString const pix6_free =":/free/free/6.png";
+    QString const pix7_free =":/free/free/7.png";
+    QString const pix8_free =":/free/free/8.png";
+    QString const pix9_free =":/free/free/9.png";
+    QString const pix10_free =":/free/free/10.png";
+    QString const pix11_free =":/free/free/11.png";
+    QString const pix12_free =":/free/free/12.png";
+    QString const pix13_free =":/free/free/13.png";
+    QString const pix14_free =":/free/free/14.png";
+    QString const pix15_free =":/free/free/15.png";
+    QString const pix16_free =":/free/free/16.png";
+    QString const pix17_free =":/free/free/17.png";
+    QString const pix18_free =":/free/free/18.png";
+    QString const pix19_free =":/free/free/19.png";
+    QString const pix20_free =":/free/free/20.png";
+    QString const pix21_free =":/free/free/21.png";
+    QString const pix22_free =":/free/free/22.png";
+    QString const pix23_free =":/free/free/23.png";
+    QString const pix24_free =":/free/free/24.png";
+    QString const pix25_free =":/free/free/25.png";
+    QString const pix26_free =":/free/free/26.png";
+    QString const pix27_free =":/free/free/27.png";
+    QString const pix28_free =":/free/free/28.png";
+    QString const pix29_free =":/free/free/29.png";
+    QString const pix30_free =":/free/free/30.png";
+
+
+
+
+    free_list.push_back(pix1_free);
+    free_list.push_back(pix2_free);
+    free_list.push_back(pix3_free);
+    free_list.push_back(pix4_free);
+    free_list.push_back(pix5_free);
+    free_list.push_back(pix6_free);
+    free_list.push_back(pix7_free);
+    free_list.push_back(pix8_free);
+    free_list.push_back(pix9_free);
+    free_list.push_back(pix10_free);
+    free_list.push_back(pix11_free);
+    free_list.push_back(pix12_free);
+    free_list.push_back(pix13_free);
+    free_list.push_back(pix14_free);
+    free_list.push_back(pix15_free);
+    free_list.push_back(pix16_free);
+    free_list.push_back(pix17_free);
+    free_list.push_back(pix18_free);
+    free_list.push_back(pix19_free);
+    free_list.push_back(pix20_free);
+    free_list.push_back(pix21_free);
+    free_list.push_back(pix22_free);
+    free_list.push_back(pix23_free);
+    free_list.push_back(pix24_free);
+    free_list.push_back(pix25_free);
+    free_list.push_back(pix26_free);
+    free_list.push_back(pix27_free);
+    free_list.push_back(pix28_free);
+    free_list.push_back(pix29_free);
+    free_list.push_back(pix30_free);
+}
+
+void MainWindow::update(){
+QString data1;
+   // data1=a.read_from_arduino();
+    //serialbuffer +=QString::fromStdString(data.toStdString());
+      //qDebug() << serialbuffer;
+    qDebug()<<data1;
+
+
+  //delete from base where serial buffer exsist
+      QSqlQuery query;
+      query.prepare("delete from reservation where resID=:data1");
+      query.bindValue(0,data1);
+      if (query.exec()==false){
+        //a.write_to_arduino("1");
+      qDebug()<<"done" ;}
+      else if (query.exec()==true)
+      {//a.write_to_arduino("0");
+         qDebug()<<"not done";
+      }
+
+
+    //data.toStdString();
+
+    //if (data.size()==4)
+    //{
+
+    //}
+}
+
+void MainWindow::on_pbModifEsp_clicked()
+{
+    int ancien_nb=Esp.getNb();
+    int id =ui->combo_modifEsp->currentText().toInt();
+    int nb =ui->nb_modifEsp->text().toInt();
+    QString bloc =ui->bloc_modifEsp->text();
+    QDate date = ui->date_modifEsp->date();
+    for(int i=0;i<ui->tableAffich->model()->rowCount();i++)
+    {
+        if(ui->tableAffich->model()->index(i,0).data().toInt()==id)
+            ancien_nb=ui->tableAffich->model()->index(i,1).data().toInt();
+    }
+
+    espace e(id,nb,bloc,date);
+
+    bool test=e.modifier();
+    if (test)
+    {
+        ui->tableAffich->setModel(Esp.afficher());
+        ui->comboMap->setModel(Esp.afficher2());
+        ui->combo_modifEsp->setModel(Esp.afficher2());
+
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Modification effectuee\n"
+                                             "Click Cancel to exit."), QMessageBox::Cancel);
+        if(ancien_nb!=nb)
+        {
+            ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+            int index;
+            for(index=0;index<ui->tableAffich->model()->rowCount();index++)
+            {
+                if(ui->tableAffich->model()->index(index,0).data().toInt()==id)
+                    break;
+            }
+            QVector<QGraphicsPixmapItem*> vector;
+            for(int i=0;i<pic_list[index].size();i++)
+            {
+                QPixmap pix(free_list[i]);
+                QGraphicsPixmapItem* pic;
+                pic = scene_list[index]->addPixmap(pix);
+                vector.push_back(pic);
+                pic_list[index] = vector;
+            }
+        }
+    }
+    else
+        QMessageBox::critical(nullptr, QObject::tr("NOT OK"),
+                              QObject::tr("Modification non effectuee.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+}
+
+void MainWindow::on_combo_modifEsp_currentIndexChanged(const QString &arg1)
+{
+    QString id_string = ui->combo_modifEsp->currentText();
+
+    QSqlQuery qry;
+    qry.prepare("select * from espaces where id='"+id_string+"'");
+    if(qry.exec())
+    {
+        while(qry.next())
+        {
+            ui->nb_modifEsp->setText(qry.value(1).toString());
+            ui->bloc_modifEsp->setText(qry.value(2).toString());
+        }
+    }
+}
+
+void MainWindow::on_pbSuppr_clicked()
+{
+    int id =ui->combo_modifEsp->currentText().toInt();
+    bool test=Esp.supprimer(id);
+    if (test)
+    {
+        ui->tableAffich->setModel(Esp.afficher());
+        ui->comboMap->setModel(Esp.afficher2());
+        ui->combo_modifEsp->setModel(Esp.afficher2());
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Suppression effectuee\n"
+                                             "Click Cancel to exit."), QMessageBox::Cancel);
+        int n= ui->combo_modifEsp->currentIndex();
+        scene_list.erase(scene_list.begin()+n);
+        pic_list.erase(pic_list.begin()+n);
+    }
+    else
+        QMessageBox::critical(nullptr, QObject::tr("NOT OK"),
+                              QObject::tr("Suppression non effectuee.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+}
+
+void MainWindow::on_comboMap_currentIndexChanged(int index)
+{
+    if (l)
+    {
+        ui->graphicsView_map->setScene(scene_list[index]);
+        QString id_string = ui->comboMap->currentText();
+        QString places;
+        QSqlQuery query;
+        query.prepare("Select * from espaces where ID='"+id_string+"'");
+        if(query.exec()){
+            while(query.next())
+            {
+                places=query.value(4).toString();
+            }
+
+        }
+
+    for(int i=0;i<pic_list[index].size();i++)
+    {
+
+
+
+       // QString places = ui->tableAffich->model()->index(index,4).data().toString();
+        if(places[i]=='n')
+        {
+            QPixmap pix(busy_list[i]);
+            pic_list[index][i]->setPixmap(pix);
+        }
+        else
+        {
+            QPixmap pix(free_list[i]);
+            pic_list[index][i]->setPixmap(pix);
+        }
+    }
+    }
+    l=true;
+}
+
+void MainWindow::on_pbGauche_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+    QVector<QGraphicsPixmapItem*> vector= pic_list[n];
+
+
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            pic_list[n][i]->setRotation(pic_list[n][i]->rotation()+45);
+        }
+    }
+}
+
+void MainWindow::on_pbDroite_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+
+
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            pic_list[n][i]->setRotation(pic_list[n][i]->rotation()-45);
+        }
+    }
+}
+
+void MainWindow::on_pbBusy_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            QByteArray led;
+            led.setNum(i);
+            //a.write_to_arduino(led);
+            QPixmap pix(busy_list[i]);
+            pic_list[n][i]->setPixmap(pix);
+            ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+            QString id_string = ui->comboMap->currentText();
+            QString places;
+            QSqlQuery query;
+            query.prepare("Select * from espaces where ID='"+id_string+"'");
+            if(query.exec()){
+                while(query.next())
+                {
+                    places=query.value(4).toString();
+                }
+
+            }
+
+            qDebug() << places;
+            places[i]='n';
+            qDebug() << places;
+            //QSqlQuery query;
+            query.prepare("Update espaces set places=:places where ID= :id");
+            query.bindValue(":id",id_string);
+            query.bindValue(":places",places);
+            query.exec();
+            ui->tableAffich->setModel(Esp.afficher());
+            qDebug() << ui->tableAffich->model()->index(n,4).data();
+
+        }
+    }
+}
+
+void MainWindow::on_pbFree_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            QByteArray led;
+            led.setNum(i+5);
+            //a.write_to_arduino(led);
+
+            ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+            QString id_string = ui->comboMap->currentText();
+            QString places;
+            QSqlQuery query;
+            query.prepare("Select * from espaces where ID='"+id_string+"'");
+            if(query.exec()){
+                while(query.next())
+                {
+                    places=query.value(4).toString();
+                }
+
+            }
+
+            qDebug() << places;
+            places[i]='o';
+            qDebug() << places;
+            //QSqlQuery query;
+            query.prepare("Update espaces set places=:places where ID= :id");
+            query.bindValue(":id",id_string);
+            query.bindValue(":places",places);
+            query.exec();
+            ui->tableAffich->setModel(Esp.afficher());
+            qDebug() << ui->tableAffich->model()->index(n,4).data();
+        }
+    }
+}
+
+void MainWindow::on_pbPDFEsp_clicked()
+{
+    //lemplacement de fichier a enregistrer
+    QString filePath;
+    filePath = QFileDialog::AcceptSave;
+    filePath = QFileDialog::Directory;
+    filePath= QFileDialog::getOpenFileName(this,tr("Emplacement du PDF"),
+                                                    "C:/Users/Oussema/Desktop",
+                                                    "PDF files (*.pdf);; All files (*.*)");
+    QString _1,_2;
+    _1="espace";
+    _2=".pdf";
+
+    QPdfWriter pdf(filePath+_1+ui->combo_modifEsp->currentText()+_2);
+    QPainter print(&pdf);
+    print.setRenderHint(QPainter::Antialiasing);
+
+    //recherche des information a printer
+    int id=ui->combo_modifEsp->currentText().toInt();
+    QSqlQuery query;
+    query.prepare("select * from espaces where id=:id");
+    query.bindValue(":id",id);
+
+    //QString cin,nom,prenom,date,email,genre;
+    QString id_string,nb_string,bloc,date;
+    //ajout des donnee dans les variables
+    if(query.exec())
+    {
+            while (query.next())
+            {
+                id_string=query.value(0).toString();
+                nb_string=query.value(1).toString();
+                bloc=query.value(2).toString();
+                date=query.value(3).toString();
+            }
+     }
+    //creation de design de fichier
+    print.setBackgroundMode(Qt::OpaqueMode);
+    //ajout dun image
+    print.drawPixmap(QRect(7400,0,2000,2000),QPixmap(":/img/logo.png"));
+    //contenu
+    print.setPen(Qt::black);
+    print.setFont(QFont("Arial", 20));
+    QString str = "Fiche espace ";
+    print.drawText(3500,1000,str+ui->combo_modifEsp->currentText());
+    print.setFont(QFont("Arial", 10));
+    print.setPen(Qt::black);
+    print.drawText(3500,3000,"ID:");
+    print.setPen(Qt::black);
+    print.drawText(3900,3000,id_string);
+    print.setPen(Qt::black);
+    print.drawText(3500,3400,"Nombre de places:");
+    print.setPen(Qt::black);
+    print.drawText(5000,3400,nb_string);
+    print.setPen(Qt::black);
+    print.drawText(3500,3800,"Bloc:");
+    print.setPen(Qt::black);
+    print.drawText(3900,3800,bloc);
+    print.setPen(Qt::black);
+    print.drawText(3500,4200,"Date:");
+    print.setPen(Qt::black);
+    print.drawText(4000,4200,date);
+    print.setPen(Qt::black);
+    print.drawRect(3200,2500,5000,3000);
+
+    print.end();
+}
+
+void MainWindow::on_pbServer_clicked()
+{
+    ServerWindow * serverWin = new ServerWindow(nullptr);
+    serverWin->show();
+}
+
+void MainWindow::on_pbChat_clicked()
+{
+    ChatWindow* chatWin = new ChatWindow(nullptr);
+    chatWin->show();
+}
+
+void MainWindow::on_pbTrier_clicked()
+{
+    if(ui->cbTri->currentIndex()==0){
+    if(ui->checkBox->isChecked())
+    {
+        if(ui->checkBox_2->isChecked())
+        {
+            if(ui->checkBox_3->isChecked())
+            {
+                ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+            }
+            ui->tableView->sortByColumn(1, Qt::AscendingOrder);
+        }
+        else if(ui->checkBox_3->isChecked())
+        {
+            ui->tableView->sortByColumn(3, Qt::AscendingOrder);
+        }
+        ui->tableView->sortByColumn(0, Qt::AscendingOrder);
+    }
+    else if(ui->checkBox_2->isChecked())
+    {
+
+        if(ui->checkBox_3->isChecked())
+        {
+            ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+        }
+        ui->tableView->sortByColumn(1, Qt::AscendingOrder);
+    }
+    else if(ui->checkBox_3->isChecked())
+    {
+        ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+    }
+    }
+    else if(ui->cbTri->currentIndex()==1)
+    {
+        if(ui->checkBox->isChecked())
+        {
+            if(ui->checkBox_2->isChecked())
+            {
+                if(ui->checkBox_3->isChecked())
+                {
+                    ui->tableView->sortByColumn(2, Qt::DescendingOrder);
+                }
+                ui->tableView->sortByColumn(1, Qt::DescendingOrder);
+            }
+            else if(ui->checkBox_3->isChecked())
+            {
+                ui->tableView->sortByColumn(3, Qt::DescendingOrder);
+            }
+            ui->tableView->sortByColumn(0, Qt::DescendingOrder);
+        }
+        else if(ui->checkBox_2->isChecked())
+        {
+
+            if(ui->checkBox_3->isChecked())
+            {
+                ui->tableView->sortByColumn(2, Qt::DescendingOrder);
+            }
+            ui->tableView->sortByColumn(1, Qt::DescendingOrder);
+        }
+        else if(ui->checkBox_3->isChecked())
+        {
+            ui->tableView->sortByColumn(2, Qt::DescendingOrder);
+        }
+    }
+}
+
+void MainWindow::on_pbRechercher_clicked()
+{
+    bool found = false;
+    int taille =  ui->tableView->model()->rowCount();
+    for(int i=0; i<taille ; i++)
+    {
+        if(ui->tableView->model()->index(i,0).data().toString() == ui->leRechercher->text())
+        {
+            ui->tableView->selectRow(i);
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        QMessageBox::critical(nullptr, QObject::tr("NOT OK"),
+                              QObject::tr("Inexistant!.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_pbActualiserEsp_clicked()
+{
+    int index=ui->comboMap->currentIndex();
+    ui->graphicsView_map->setScene(scene_list[index]);
+    QString id_string = ui->comboMap->currentText();
+    QString places;
+    QSqlQuery query;
+    query.prepare("Select * from espaces where ID='"+id_string+"'");
+    if(query.exec()){
+        while(query.next())
+        {
+            places=query.value(4).toString();
+        }
+
+    }
+
+for(int i=0;i<pic_list[index].size();i++)
+{
+
+
+
+   // QString places = ui->tableAffich->model()->index(index,4).data().toString();
+    if(places[i]=='n')
+    {
+        QByteArray led;
+        led.setNum(1);
+        //a.write_to_arduino(led);
+        QPixmap pix(busy_list[i]);
+        pic_list[index][i]->setPixmap(pix);
+    }
+    else
+    {
+        //a.write_to_arduino(ledOff[i]);
+        QPixmap pix(free_list[i]);
+        pic_list[index][i]->setPixmap(pix);
+    }
+}
+}
