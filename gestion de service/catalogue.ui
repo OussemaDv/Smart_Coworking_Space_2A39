@@ -23,7 +23,14 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(85, 170, 255);</string>
+    <string notr="true">border-radius: 6px;
+selection-color: rgb(170, 170, 255);
+gridline-color: rgb(255, 255, 255);
+selection-background-color: rgb(0, 0, 0);
+
+
+font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: rgb(184, 123, 158);</string>
    </property>
    <property name="title">
     <string>catalogue</string>

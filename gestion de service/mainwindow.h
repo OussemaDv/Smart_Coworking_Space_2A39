@@ -64,37 +64,6 @@
 #include <QMessageBox>
 //
 
-//Espaces*******************************************************
-#include <QMainWindow>
-#include "espace.h"
-#include <QMessageBox>
-#include <QVector>
-#include <QString>
-#include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
-#include <QPixmap>
-#include <QtCharts>
-#include <QChartView>
-#include <QPieSeries>
-#include <QPieSlice>
-#include <QBarSet>
-#include <QBarSeries>
-#include <QChar>
-#include <math.h>
-#include "serverwindow.h"
-#include "serverworker.h"
-#include "chatserver.h"
-#include "chatclient.h"
-#include "chatwindow.h"
-#include <QTableView>
-#include <QPrinter>
-#include <QPainter>
-#include <QPdfWriter>
-#include <QDebug>
-#include <QtDebug>
-#include <QPrintDialog>
-#include <QFileDialog>
-//**********************************************************************
 
 
 using namespace std;
@@ -116,17 +85,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-    //****************************Espace************************************
-
-    void statistique();
-
-    QChart * statSalle();
-    QChart * statPlace();
-    void setBusyList();
-
-    void setFreeList();
-    //***********************************************************************
 
 
 private slots:
@@ -255,38 +213,6 @@ private slots:
 
        //
 
-           void on_pbAjoutEsp_clicked();
-
-           void on_pbModifEsp_clicked();
-
-           void on_combo_modifEsp_currentIndexChanged(const QString &arg1);
-
-           void on_pbSuppr_clicked();
-
-           void on_comboMap_currentIndexChanged(const QString &arg1);
-
-           void on_comboMap_currentIndexChanged(int index);
-
-           void on_pbGauche_clicked();
-
-           void on_pbDroite_clicked();
-
-           void on_pbBusy_clicked();
-
-           void on_pbFree_clicked();
-
-           void on_pbPDFEsp_clicked();
-
-           void on_pbServer_clicked();
-
-           void on_pbChat_clicked();
-
-           void on_pbTrier_clicked();
-
-           void on_pbRechercher_clicked();
-
-           void on_pbActualiserEsp_clicked();
-
 private:
     Ui::MainWindow *ui;
 
@@ -310,14 +236,6 @@ private:
        Materiels M;
          // Espace *E;
           catalogue *C;
-
-          espace Esp;
-          QVector<QString> free_list;
-          QVector<QString> busy_list;
-          QVector<QGraphicsScene*> scene_list;
-          QVector<QVector<QGraphicsPixmapItem*>> pic_list;
-          bool l=false,l2=false;
-          QChartView * chartview;
 
 };
 #endif // MAINWINDOW_H

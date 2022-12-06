@@ -113,7 +113,7 @@ bool Materiels::update(int id_materiel)
 }
 void  Materiels :: telechargerPDF()
 {
-    QPdfWriter pdf("C:/Users/Slim/Desktop/eya/projetCpp/liste des materiels/materiels.pdf");
+    QPdfWriter pdf("C:/Users/Slim/Desktop/eya/2eme/projetCpp/oracle/pdf/materiels.pdf");
     QPainter painter(&pdf);
     painter.setFont(QFont("Century Gothic",35,QFont::Bold));
     painter.drawText(2000,1500,"LISTES DES MATERIELS");
