@@ -2,6 +2,37 @@
 #include "ui_mainwindow.h"
 #include "arduino.h"
 #include "calculatrice.h"
+
+// ****Fournisseur*****
+
+#include "Fournisseur.h"
+#include <QSqlQuery>
+#include <QMessageBox>
+#include <QPixmap>
+// *********Materiels***
+
+#include "materiels.h"
+#include <QApplication>
+#include <QMessageBox>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
+#include <QIntValidator>
+#include <QMainWindow>
+#include <QTableView>
+#include <Qdate>
+#include <QAbstractItemModel>
+#include <QDesktopServices>
+#include <QtCharts/QAreaSeries>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QPieSlice>
+#include <QPieSeries>
+#include <QChartView>
+#include <QFileDialog>
+#include <QComboBox>
+
+//
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -63,6 +94,105 @@ ui->tab_reservation_2->setModel(R.afficher());
     ui->nom_emp->setValidator(new QRegExpValidator(QRegExp("[A-z]*")));
     ui->prenom_emp->setValidator(new QRegExpValidator(QRegExp("[A-z]*")));
     ui->tab_employe->setModel(e.afficher_emp());
+
+    //******Fourn****
+
+
+    ui->lineEdit_ID->setValidator(new QIntValidator(0,9999,this));
+    ui->le_quantite->setValidator( new QIntValidator(0,9999, this) );
+    ui->le_prix->setValidator( new QIntValidator(0, 9999, this) );
+    ui->le_nom->setValidator(new QRegExpValidator(  QRegExp("[A-z]*")  ));
+    ui->le_adresse->setValidator(new QRegExpValidator(  QRegExp("[A-z]*")  ));
+    ui->tabE->setModel(Etmp.afficher(false,NULL));
+    ui->comboBoxID->setModel(Etmp.afficherCB());
+
+    ui->le_prix->clear();
+    ui->le_nom->clear();
+    ui->le_email->clear();
+    ui->le_quantite->clear();
+    ui->lineEdit_ID->clear();
+    ui->le_adresse->clear();
+    //
+    //pdf/*
+    /*
+    QPixmap pixmap("pictures/pdf.png");
+    QIcon ButtonIcon(pixmap);
+    ui->pdfPb->setIcon(ButtonIcon);
+    //email
+    QPixmap m("pictures/gmail.png");
+    QIcon e(m);
+    ui->emailpb->setIcon(e);
+    //what'app
+    QPixmap app("pictures/whatsapp.png");
+    QIcon what(app);
+    ui->whatsapp_pb->setIcon(what);
+    //flame
+    QPixmap fla("pictures/fire.png");
+    QIcon a(fla);
+    ui->detection->setIcon(a);
+    //Map
+    QPixmap map("pictures/map.png");
+    QIcon mapp(map);
+    ui->map->setIcon(mapp);
+*/
+    //******Materiels*****
+    ui->l1->setValidator(new QIntValidator(0,9999,this));
+       ui->l2->addItem("table");
+       ui->l2->addItem("chaise");
+       ui->l2->addItem("tableau");
+       ui->l2->addItem("climatiseur");
+       ui->l2->addItem("prise");
+       ui->l2->addItem("poubelle");
+       ui->l2->addItem("lampe");
+       ui->l2->addItem("camera");
+       ui->l2->addItem("eau");
+       ui->l2->addItem("jus");
+       ui->l2->addItem("cafe");
+       ui->l2->addItem("gateau");
+       ui->l2->addItem("projecteur");
+       ui->l2->addItem("the");
+       ui->l2->addItem("multiprises");
+       ui->l2->addItem("chauffage");
+       ui->l3->setValidator(new QIntValidator(0,9999,this));
+       ui->tab->setModel(M.afficher());
+       //
+
+    //*******************Espace*************************
+       ui->tableAffich->setModel(Esp.afficher());
+       ui->tableAffich->setSortingEnabled(true);
+       ui->comboMap->setModel(Esp.afficher2());
+       ui->combo_modifEsp->setModel(Esp.afficher2());
+       ui->tableView->setModel(Esp.afficher3());
+       ui->tableView->setSortingEnabled(true);
+       setBusyList();
+       setFreeList();
+       ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+       for(int i=0;i<(ui->tableAffich->model()->rowCount());i++)
+       {
+           QGraphicsScene *scene = new QGraphicsScene;
+           QVector <QGraphicsPixmapItem*> vector;
+           int n=ui->tableAffich->model()->index(i,1).data().toInt();
+           for(int j=0;j<n;j++)
+           {
+               QGraphicsPixmapItem* pic;
+               QPixmap pix(free_list[j]);
+               pic = scene->addPixmap(pix);
+               pic->setFlag(QGraphicsItem::ItemIsMovable);
+               pic->setFlag(QGraphicsItem::ItemIsSelectable);
+               vector.push_back(pic);
+           }
+           scene_list.push_back(scene);
+           pic_list.push_back(vector);
+       }
+
+       ui->graphicsView_map->setScene(scene_list[0]);
+
+       //statistique();
+       //statSalle();
+
+      statSalle();
+      statPlace();
+
 }
 
 MainWindow::~MainWindow()
@@ -316,7 +446,7 @@ void MainWindow::on_aff_clicked()
 void MainWindow::on_pdf_clicked()
 {
     //lemplacement de fichier a enregistrer
-    QPdfWriter pdf("C:/Users/azizs/Desktop/aziz.pdf");
+    QPdfWriter pdf("aziz.pdf");
     QPainter print(&pdf);
 
     //recherche des information a printer
@@ -343,7 +473,7 @@ void MainWindow::on_pdf_clicked()
     //creation de design de fichier
     print.setBackgroundMode(Qt::OpaqueMode);
     //ajout dun image
-    print.drawPixmap(QRect(7400,0,2000,2000),QPixmap("C:/Users/azizs/Desktop/integration/images/logo.png"));
+    print.drawPixmap(QRect(7400,0,2000,2000),QPixmap("logo.png"));
     //contenu
     print.setPen(Qt::black);
     print.setFont(QFont("Arial", 20));
@@ -474,12 +604,12 @@ void MainWindow::on_gestion2_clicked()
 
 void MainWindow::on_gestion3_clicked()
 {
-
+ui->stackedWidget->setCurrentIndex(3);
 }
 
 void MainWindow::on_gestion4_clicked()
 {
-
+ui->stackedWidget->setCurrentIndex(4);
 }
 
 void MainWindow::on_gestion5_clicked()
@@ -489,7 +619,7 @@ ui->stackedWidget->setCurrentIndex(5);
 
 void MainWindow::on_gestion6_clicked()
 {
-
+ui->stackedWidget->setCurrentIndex(6);
 }
 
 void MainWindow::on_ajout_emp_clicked()
@@ -556,7 +686,7 @@ void MainWindow::on_mod_emp_clicked()
 
 void MainWindow::on_pb_recherche_clicked()
 {
-    int ID=ui->id_emp->text().toInt();
+    int ID=ui->id_emp_2->text().toInt();
     ui->tab_employe->setModel(e.rechercher_id_emp(ID));
     ui->id_emp->clear();
 }
@@ -580,12 +710,11 @@ void MainWindow::on_pb_supprimer_clicked()
 {
     int ID=ui->lineEdit_id_supp->text().toInt();
     QString recherche=ui->lineEdit_id_supp->text();
-    bool test=e.supprimer_emp(ID);
 
     if (e.rechercherID_emp(recherche)->rowCount()!=0 and recherche.length()!=0)
     {
-        if(test)
-        {
+        bool test=e.supprimer_emp(ID);
+
             QMessageBox::information(nullptr, QObject::tr("Succès"),
                                      QObject::tr("Suppression effectué.\n"
                                                  "Cliquer sur Cancel to exit."), QMessageBox::Cancel);
@@ -596,7 +725,7 @@ void MainWindow::on_pb_supprimer_clicked()
                                   QObject::tr("Suppression non effectué !\n"
                                               "Cliquer sur Cancel to exit."), QMessageBox::Cancel);
         }
-    }
+
 
 
 
@@ -608,9 +737,9 @@ void MainWindow::on_pb_pdf_clicked()
 {
     QSqlQuery query;
 
-    QPdfWriter pdf("C:/Users/azizs/Desktop/integration/pdfemp.pdf");
-    QImage image("C:/Users/azizs/Desktop/integration/images/logo.png");
-    QImage image1("C:/Users/azizs/Desktop/integration/images/date.png");
+    QPdfWriter pdf("pdfemp.pdf");
+    QImage image("images/logo.png");
+    QImage image1("date.png");
 
     const QPoint imageCoordinates(100,50);
     const QPoint image1Coordinates(7500,900);
@@ -906,7 +1035,7 @@ void MainWindow::on_pb_calculatrice_clicked()
 
 void MainWindow::on_pb_pdf_reservation_clicked()
 {//generer un pdf pour reservation
-    QPdfWriter pdf("C:/Users/ahmed/Desktop/stat_reservation.pdf");
+    QPdfWriter pdf("stat_reservation.pdf");
 
         QPainter painter(&pdf);
         int i = 4100;
@@ -1006,4 +1135,1231 @@ void MainWindow::on_pb_stat_reservation_clicked()
     chartView->setRenderHint(QPainter::Antialiasing);
     chartView->resize(1000,500);
     chartView->show();
+}
+
+
+//********Fourniss***
+
+
+
+void MainWindow::on_button_ajouter_clicked()
+{
+
+ int id=ui->lineEdit_ID->text().toInt();
+ int quantite=ui->le_quantite->text().toInt();
+ int prix=ui->le_prix->text().toInt();
+ QString nom=ui->le_nom->text();
+ QString email=ui->le_email->text();
+ QString adresse=ui->le_adresse->text();
+ Fournisseur s(id,quantite,prix,nom,adresse,email);
+   bool test=s.ajouter();
+   /*if(s.verifieremail(email)==false){
+       test=false;
+         QMessageBox::critical(nullptr,QObject::tr("email incorrect"),QObject::tr("ajout non effectue\n""click cancel to exit"),QMessageBox::Cancel);
+   }*/
+
+    if(test){
+        //refresh
+        ui->tabE->setModel(Etmp.afficher(false,NULL));
+         ui->comboBoxID->setModel(Etmp.afficherCB());
+         ui->le_prix->clear();
+         ui->le_nom->clear();
+         ui->le_email->clear();
+         ui->le_quantite->clear();
+         ui->lineEdit_ID->clear();
+         ui->le_adresse->clear();
+        QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("ajout effectue\n""click cancel to exit"),QMessageBox::Cancel);
+    }else{
+        QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("ajout non effectue\n""click cancel to exit"),QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_pbSupprimer_clicked()
+{
+    int sup=ui->lineEdit_ID->text().toInt();
+    bool test=Etmp.supprimer(sup);
+    if(test){
+         ui->tabE->setModel(Etmp.afficher(false,NULL));
+          ui->comboBoxID->setModel(Etmp.afficherCB());
+          ui->le_prix->clear();
+          ui->le_nom->clear();
+          ui->le_email->clear();
+          ui->le_quantite->clear();
+          ui->lineEdit_ID->clear();
+          ui->le_adresse->clear();
+        QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("Suppression effectues\n""click cancel to exit"),QMessageBox::Cancel);
+    }else{
+        QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("suppression non effectue\n""click cancel to exit"),QMessageBox::Cancel);
+    }
+
+
+}
+
+void MainWindow::on_updateBP_clicked()
+{
+    int up=ui->lineEdit_ID->text().toInt();
+    int quantite=ui->le_quantite->text().toInt();
+    int prix=ui->le_prix->text().toInt();
+    QString nom=ui->le_nom->text();
+    QString email=ui->le_email->text();
+    QString adresse=ui->le_adresse->text();
+    Fournisseur s(up,quantite,prix,nom,adresse,email);
+    bool test=s.update(up);
+    if(test){
+         ui->tabE->setModel(Etmp.afficher(false,NULL));
+ui->le_prix->clear();
+ui->le_adresse->clear();
+ui->le_email->clear();
+ui->le_quantite->clear();
+ui->lineEdit_ID->clear();
+ui->le_nom->clear();
+        QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("update effectues\n""click cancel to exit"),QMessageBox::Cancel);
+    }else{
+        QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("update non effectue\n""click cancel to exit"),QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_comboBoxID_currentIndexChanged(const QString &arg1)
+{
+    int id=ui->comboBoxID->currentText().toInt();
+     QSqlQuery query;
+     query.prepare("SELECT * FROM Fournisseur WHERE ID=:id");
+     query.bindValue(":id",id);
+   if(query.exec()){
+       while(query.next()){
+          QString id=query.value(0).toString();
+            QString quantite =query.value(4).toString();
+              QString prix=query.value(5).toString();
+                QString nom=query.value(1).toString();
+                  QString adresse=query.value(3).toString();
+                    QString email=query.value(2).toString();
+           ui->lineEdit_ID->setText(id);
+            ui->le_nom->setText(nom);
+            ui->le_prix->setText(prix);
+            ui->le_quantite->setText(quantite);
+            ui->le_email->setText(email);
+            ui->le_adresse->setText(adresse);
+       }
+   }
+
+
+}
+
+void MainWindow::on_pdfPb_clicked()
+{
+    bool test= Etmp.pdf();
+    if(test){
+
+        QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("pdf generated\n""click cancel to exit"),QMessageBox::Cancel);
+    }else{
+        QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("pdf not generated\n""click cancel to exit"),QMessageBox::Cancel);
+    }
+
+
+}
+
+
+
+void MainWindow::on_emailpb_clicked()
+{
+    Di = new dialog(this);
+    Di->show();
+}
+
+void MainWindow::on_rechercherpb_clicked()
+{
+   QString search= ui->le_recherche->text();
+
+    ui->tabE->setModel(Etmp.afficher(true,search));
+}
+
+
+
+
+
+
+void MainWindow::on_check_quantite_clicked()
+{
+    if(ui->check_quantite->isChecked()){
+        ui->tabE->setModel(Etmp.triQuantite());
+        ui->tabE->show();
+        QMessageBox::information(nullptr,QString("tri done"),QObject::tr("tri by quantite done \n""click cancel to exit"),QMessageBox::Cancel);
+
+    }else{
+        ui->tabE->setModel(Etmp.afficher(false,NULL));
+        QMessageBox::information(nullptr,QString("bye"),QObject::tr("released \n""click cancel to exit"),QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_check_prix_clicked()
+{
+    if(ui->check_prix->isChecked()){
+        ui->tabE->setModel(Etmp.triPrix());
+        ui->tabE->show();
+        QMessageBox::information(nullptr,QString("tri done"),QObject::tr("tri by PRI done \n""click cancel to exit"),QMessageBox::Cancel);
+
+    }else{
+        ui->tabE->setModel(Etmp.afficher(false,NULL));
+        QMessageBox::information(nullptr,QString("bye"),QObject::tr("released \n""click cancel to exit"),QMessageBox::Cancel);
+    }
+}
+
+
+
+void MainWindow::on_check_ID_clicked()
+{
+
+       if(ui->check_ID->isChecked()){
+           ui->tabE->setModel(Etmp.triID());
+           ui->tabE->show();
+           QMessageBox::information(nullptr,QString("tri done "),QObject::tr("tri by id done \n""click cancel to exit"),QMessageBox::Cancel);
+
+       }else{
+           ui->tabE->setModel(Etmp.afficher(false,NULL));
+           QMessageBox::information(nullptr,QString("bye"),QObject::tr("released \n""click cancel to exit"),QMessageBox::Cancel);
+       }
+}
+
+
+
+
+
+
+
+
+void MainWindow::on_map_clicked()
+{
+    m=new Map(this);
+    m->show();
+
+}
+
+void MainWindow::on_afficher_clicked()
+{ui->tabE->setModel(Etmp.afficher(false,NULL));
+}
+
+void MainWindow::on_detection_clicked()
+{E = new Detecteur(this);
+    E->show();
+
+}
+
+void MainWindow::on_whatsapp_pb_clicked()
+{
+    QDesktopServices::openUrl(QUrl("https://wa.me/+21655029116", QUrl::TolerantMode));
+}
+
+
+//******Materiels*******
+
+
+void MainWindow::on_bajouter_clicked()
+{
+    int id_materiel=ui->l1->text().toInt();
+    QString type=ui->l2->currentText();
+    int nombre=ui->l3->text().toInt();
+    QDate date_arriv=ui->l4->date();
+    Materiels M (id_materiel, type, nombre, date_arriv);
+    bool test=M.ajouter();
+    if (test)
+    {
+        QMessageBox :: information(nullptr, QObject ::tr("ok"),QObject::tr("ajout effectue, click cancel to exit."), QMessageBox::Cancel );
+        ui->tab->setModel(M.afficher());
+        ui->l1->clear();
+        ui->l3->clear();
+
+    }
+    else
+    {
+        QMessageBox :: critical(nullptr, QObject ::tr("not ok"),QObject::tr("ajout non effectue, click cancel to exit."), QMessageBox::Cancel );
+    }
+}
+
+
+void MainWindow::on_bsupprimer_clicked()
+{
+
+    int idM =ui->l1->text().toInt();
+    bool test=M.supprimer(idM);
+    if (test)
+    {
+        QMessageBox :: information(nullptr, QObject ::tr("ok"),QObject::tr("suppression effectue, click cancel to exit."), QMessageBox::Cancel );
+        ui->tab->setModel(M.afficher());
+        ui->l1->clear();
+    }
+    else
+    {
+        QMessageBox :: critical(nullptr, QObject ::tr("not ok"),QObject::tr("suppression non effectue, click cancel to exit."), QMessageBox::Cancel );
+    }
+
+}
+
+void MainWindow::on_bmodifier_clicked()
+{
+        int id_materiel=ui->l1->text().toInt();
+        QString type=ui->l2->currentText();
+        int nombre=ui->l3->text().toInt();
+        QDate date_arriv=ui->l4->date();
+        Materiels M(id_materiel,type,nombre,date_arriv);
+        bool test=M.update(id_materiel);
+        if(test)
+        {
+            ui->tab->setModel(M.afficher());
+            QMessageBox::information(nullptr,QObject::tr("ok"),QObject::tr("update effectues\n""click cancel to exit"),QMessageBox::Cancel);
+            ui->l1->clear();
+            ui->l3->clear();
+        }
+        else
+        {
+            QMessageBox::critical(nullptr,QObject::tr("not ok"),QObject::tr("update non effectue\n""click cancel to exit"),QMessageBox::Cancel);
+        }
+}
+
+
+void MainWindow::on_bpdf_clicked()
+{
+    M.telechargerPDF();
+    QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("Téléchargement terminé"), QMessageBox::Cancel);
+}
+
+void MainWindow::on_lrecherche_textChanged(const QString &arg1)
+{
+    QString rech = ui->lrecherche->text();
+                     M.recherche(ui->tab,rech);
+                     if (ui->lrecherche->text().isEmpty())
+                     {
+                         ui->tab->setModel(M.afficher());
+                     }
+}
+
+void MainWindow::on_tridate_clicked()
+{
+    ui->tab->setModel(M.tri_date());
+}
+
+void MainWindow::on_trinombre_clicked()
+{
+   ui->tab->setModel(M.tri_nombre());
+}
+
+void MainWindow::on_triid_clicked()
+{
+    ui->tab->setModel(M.tri_id());
+}
+
+
+
+/*void MainWindow::on_bstat_clicked()
+{
+    QMessageBox::information(nullptr,QObject::tr("OK stat"),QObject::tr("Téléchargement terminé"), QMessageBox::Cancel);
+    QSqlQueryModel * model= new QSqlQueryModel();
+          model->setQuery("select * from MATERIELS where salaire >= 1000");
+          float dispo1=model->rowCount();
+
+          model->setQuery("select * from MATERIELS where salaire <1000");
+          float dispo=model->rowCount();
+
+          float total=dispo1+dispo;
+              QString a=QString("Cadre . " +QString::number((dispo1*100)/total,'f',2)+"%" );
+              QString b=QString("employee .  "+QString::number((dispo*100)/total,'f',2)+"%" );
+              QPieSeries *series = new QPieSeries();
+              series->append(a,dispo1);
+              series->append(b,dispo);
+          if (dispo1!=0)
+          {
+              QPieSlice *slice = series->slices().at(0);
+              slice->setLabelVisible();
+              slice->setPen(QPen());}
+          if ( dispo!=0)
+          {
+              QPieSlice *slice1 = series->slices().at(1);
+              slice1->setLabelVisible();
+          }
+
+          QChart *chart = new QChart();
+
+
+          chart->addSeries(series);
+          chart->setTitle("Salaire des employes :Nb employes: "+ QString::number(total));
+
+
+
+          QChartView *chartView = new QChartView(chart);
+          chartView->setRenderHint(QPainter::Antialiasing);
+          chartView->resize(1000,500);
+          chartView->show();
+
+   }*/
+
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    E=new Detecteur(this);
+    E->show();
+}
+
+
+void MainWindow::on_bcatalogue_clicked()
+{
+    C=new catalogue(this);
+    C->show();
+}
+
+void MainWindow::on_bexcel_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Excel file"), qApp->applicationDirPath (),
+                                                    tr("Excel Files (*.xls)"));
+    if (fileName.isEmpty())
+        return;
+
+    ExportExcelObject obj(fileName, "mydata", ui->tab);
+
+    //colums to export
+    obj.addField(0, "entier", "char(20)");
+    obj.addField(1, "reel", "char(20)");
+    obj.addField(2, "combobox", "char(20)");
+    obj.addField(3, "lineedit", "char(20)");
+    obj.addField(4, "textedit", "char(20)");
+    obj.addField(5, "dateedit", "char(20)");
+    obj.addField(5, "timeedit", "char(20)");
+
+
+    int retVal = obj.export2Excel();
+    if( retVal > 0)
+    {
+        QMessageBox::information(this, tr("Done"),
+                                 QString(tr("%1 records exported!")).arg(retVal)
+                                 );
+    }
+}
+
+
+//
+
+void MainWindow::on_pbAjoutEsp_clicked()
+{
+    int id=ui->id_ajoutEsp->text().toInt();
+    int nb=ui->nb_ajoutEsp->text().toInt();
+    QString bloc=ui->bloc_ajoutEsp->text();
+    QDate date=ui->date_ajoutEsp->date();
+
+    espace e(id,nb,bloc,date);
+
+    bool test=e.ajouter();
+
+    if(test)
+    {
+        ui->tableAffich->setModel(Esp.afficher());
+        ui->combo_modifEsp->setModel(Esp.afficher2());
+        ui->comboMap->setModel(Esp.afficher2());
+        QGraphicsScene *scene = new QGraphicsScene;
+        QVector<QGraphicsPixmapItem*> vector;
+        for(int i=0;i<Esp.getNb();i++)
+        {
+            QPixmap pix(free_list[i]);
+            QGraphicsPixmapItem *pic;
+            pic = scene->addPixmap(pix);
+            vector.push_back(pic);
+        }
+        ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+        int index;
+        for(index = 0;index<ui->tableAffich->model()->rowCount();index++)
+        {
+            if(ui->tableAffich->model()->index(index,0).data().toInt() == index)
+                break;
+        }
+        qDebug() << "done";
+        pic_list.insert(pic_list.begin()+index,vector);
+        scene_list.insert(scene_list.begin()+index,scene);
+
+        //chartview = statSalle();
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Ajout effectue\n"
+                                             "Click Cancel to exit."), QMessageBox::Ok);
+        ui->id_ajoutEsp->clear();
+        ui->nb_ajoutEsp->clear();
+        ui->bloc_ajoutEsp->clear();
+    }
+
+}
+void MainWindow::statistique()
+{
+    QBarSet *set0 = new QBarSet("bloc a");
+    QBarSet *set1 = new QBarSet("bloc b");
+    QBarSet *set2 = new QBarSet("bloc c");
+    QBarSet *set3 = new QBarSet("bloc d");
+
+    *set0 << 30;
+    *set1 << 40;
+    *set2 << 60;
+    *set3 << 40;
+
+    QBarSet *set02 = new QBarSet("bloc ;");
+    QBarSet *set12 = new QBarSet("bloc j");
+    QBarSet *set22 = new QBarSet("bloc i");
+    QBarSet *set32 = new QBarSet("bloc d");
+
+    *set02 << 70;
+    *set12 << 56;
+    *set22 << 50;
+    *set32 << 58;
+
+    QBarSeries *series = new QBarSeries();
+    series->append(set0);
+    series->append(set1);
+    series->append(set2);
+    series->append(set3);
+
+    QBarSeries *series2 = new QBarSeries();
+    series2->append(set02);
+    series2->append(set12);
+    series2->append(set22);
+    series2->append(set32);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("nombre de salle selon bloc");
+
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QChart *chart2 = new QChart();
+    chart2->addSeries(series2);
+    chart2->setTitle("nombre de salle selon bloc");
+
+
+
+    QChartView *chartView = new QChartView(chart);
+    QChartView *chartView2 = new QChartView(chart2);
+
+    //chartView->setParent(ui->horizontalFrame);
+    //chartView2->setParent(ui->horizontalFrame_2);
+}
+
+QChart * MainWindow::statSalle()
+{
+    QMap <QChar,int> blocs;
+    bool exist=false;
+    //qDebug() << ui->tableAffich->model()->rowCount();
+    for(int i=0;i<ui->tableAffich->model()->rowCount();i++)
+    {
+        QMap<QChar,int>::iterator it;
+        for(it=blocs.begin();it!=blocs.end();++it)
+        {
+            if(ui->tableAffich->model()->index(i,2).data().toString()[0]==it.key())
+                exist = true;
+        }
+        if(exist)
+        {
+            blocs[ui->tableAffich->model()->index(i,2).data().toString()[0]]++;
+            exist = false;
+        }
+        else
+        {
+            QChar ch= ui->tableAffich->model()->index(i,2).data().toString()[0];
+            blocs.insert(ch,1);
+        }
+    }
+    //QChar ch= ui->tableAffich->model()->index(0,2).data().toString()[0];
+    int salles=0;
+    QMap<QChar,int>::iterator it;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        salles+=it.value();
+    }
+
+    QVector<QBarSet*> sets;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        float stat;
+        stat = (it.value()*100/salles);
+        qDebug() << stat;
+        QBarSet *set = new QBarSet(QString(it.key()));
+        *set << stat;
+        sets.push_back(set);
+    }
+
+    QBarSeries *series = new QBarSeries();
+
+    for(int i=0;i<sets.size();i++)
+    {
+        series->append(sets[i]);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Pourcentage de salles par bloc.");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    //QBarCategoryAxis *axis = new QBarCategoryAxis();
+    chart->createDefaultAxes();
+    QChartView *chartView = new QChartView(chart);
+    chartView->setParent(ui->horizontalFrame_salles);
+
+    return chart;
+}
+
+QChart * MainWindow::statPlace()
+{
+    QMap <QChar,int> blocs;
+    bool exist=false;
+    //qDebug() << ui->tableAffich->model()->rowCount();
+    for(int i=0;i<ui->tableAffich->model()->rowCount();i++)
+    {
+        QMap<QChar,int>::iterator it;
+        for(it=blocs.begin();it!=blocs.end();++it)
+        {
+            if(ui->tableAffich->model()->index(i,2).data().toString()[0]==it.key())
+                exist = true;
+        }
+        if(exist)
+        {
+            blocs[ui->tableAffich->model()->index(i,2).data().toString()[0]]+=ui->tableAffich->model()->index(i,1).data().toInt();
+            exist = false;
+        }
+        else
+        {
+            QChar ch= ui->tableAffich->model()->index(i,2).data().toString()[0];
+            blocs.insert(ch,ui->tableAffich->model()->index(i,1).data().toInt());
+        }
+    }
+    //QChar ch= ui->tableAffich->model()->index(0,2).data().toString()[0];
+    int places=0;
+    QMap<QChar,int>::iterator it;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        places+=it.value();
+    }
+
+    QVector<QBarSet*> sets;
+    for(it=blocs.begin();it!=blocs.end();++it)
+    {
+        float stat;
+        stat = (it.value()*100/places);
+        qDebug() << stat;
+        QBarSet *set = new QBarSet(QString(it.key()));
+        *set << stat;
+        sets.push_back(set);
+    }
+
+    QBarSeries *series = new QBarSeries();
+
+    for(int i=0;i<sets.size();i++)
+    {
+        series->append(sets[i]);
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Pourcentage de places par bloc.");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    //QBarCategoryAxis *axis = new QBarCategoryAxis();
+    chart->createDefaultAxes();
+    QChartView *chartView = new QChartView(chart);
+    chartView->setParent(ui->horizontalFrame_places);
+
+    return chart;
+}
+
+void MainWindow::setBusyList()
+{
+    QString const pix1_busy =":/busy/busy/1.png";
+    QString const pix2_busy  =":/busy/busy/2.png";
+    QString const pix3_busy  =":/busy/busy/3.png";
+    QString const pix4_busy  =":/busy/busy/4.png";
+    QString const pix5_busy =":/busy/busy/5.png";
+    QString const pix6_busy =":/busy/busy/6.png";
+    QString const pix7_busy =":/busy/busy/7.png";
+    QString const pix8_busy =":/busy/busy/8.png";
+    QString const pix9_busy =":/busy/busy/9.png";
+    QString const pix10_busy =":/busy/busy/10.png";
+    QString const pix11_busy =":/busy/busy/11.png";
+    QString const pix12_busy =":/busy/busy/12.png";
+    QString const pix13_busy =":/busy/busy/13.png";
+    QString const pix14_busy =":/busy/busy/14.png";
+    QString const pix15_busy =":/busy/busy/15.png";
+    QString const pix16_busy =":/busy/busy/16.png";
+    QString const pix17_busy =":/busy/busy/17.png";
+    QString const pix18_busy =":/busy/busy/18.png";
+    QString const pix19_busy =":/busy/busy/19.png";
+    QString const pix20_busy =":/busy/busy/20.png";
+    QString const pix21_busy =":/busy/busy/21.png";
+    QString const pix22_busy =":/busy/busy/22.png";
+    QString const pix23_busy =":/busy/busy/23.png";
+    QString const pix24_busy =":/busy/busy/24.png";
+    QString const pix25_busy =":/busy/busy/25.png";
+    QString const pix26_busy =":/busy/busy/26.png";
+    QString const pix27_busy =":/busy/busy/27.png";
+    QString const pix28_busy =":/busy/busy/28.png";
+    QString const pix29_busy =":/busy/busy/29.png";
+    QString const pix30_busy =":/busy/busy/30.png";
+
+
+    busy_list.push_back(pix1_busy);
+    busy_list.push_back(pix2_busy);
+    busy_list.push_back(pix3_busy);
+    busy_list.push_back(pix4_busy);
+    busy_list.push_back(pix5_busy);
+    busy_list.push_back(pix6_busy);
+    busy_list.push_back(pix8_busy);
+    busy_list.push_back(pix9_busy);
+    busy_list.push_back(pix10_busy);
+    busy_list.push_back(pix12_busy);
+    busy_list.push_back(pix13_busy);
+    busy_list.push_back(pix14_busy);
+    busy_list.push_back(pix15_busy);
+    busy_list.push_back(pix16_busy);
+    busy_list.push_back(pix17_busy);
+    busy_list.push_back(pix18_busy);
+    busy_list.push_back(pix19_busy);
+    busy_list.push_back(pix20_busy);
+    busy_list.push_back(pix21_busy);
+    busy_list.push_back(pix22_busy);
+    busy_list.push_back(pix23_busy);
+    busy_list.push_back(pix24_busy);
+    busy_list.push_back(pix25_busy);
+    busy_list.push_back(pix26_busy);
+    busy_list.push_back(pix27_busy);
+    busy_list.push_back(pix28_busy);
+    busy_list.push_back(pix29_busy);
+    busy_list.push_back(pix30_busy);
+}
+
+void MainWindow::setFreeList()
+{
+    QString const pix1_free = ":/free/free/1.png";
+    QString const pix2_free =":/free/free/2.png";
+    QString const pix3_free=":/free/free/3.png";
+    QString const pix4_free =":/free/free/4.png";
+    QString const pix5_free =":/free/free/5.png";
+    QString const pix6_free =":/free/free/6.png";
+    QString const pix7_free =":/free/free/7.png";
+    QString const pix8_free =":/free/free/8.png";
+    QString const pix9_free =":/free/free/9.png";
+    QString const pix10_free =":/free/free/10.png";
+    QString const pix11_free =":/free/free/11.png";
+    QString const pix12_free =":/free/free/12.png";
+    QString const pix13_free =":/free/free/13.png";
+    QString const pix14_free =":/free/free/14.png";
+    QString const pix15_free =":/free/free/15.png";
+    QString const pix16_free =":/free/free/16.png";
+    QString const pix17_free =":/free/free/17.png";
+    QString const pix18_free =":/free/free/18.png";
+    QString const pix19_free =":/free/free/19.png";
+    QString const pix20_free =":/free/free/20.png";
+    QString const pix21_free =":/free/free/21.png";
+    QString const pix22_free =":/free/free/22.png";
+    QString const pix23_free =":/free/free/23.png";
+    QString const pix24_free =":/free/free/24.png";
+    QString const pix25_free =":/free/free/25.png";
+    QString const pix26_free =":/free/free/26.png";
+    QString const pix27_free =":/free/free/27.png";
+    QString const pix28_free =":/free/free/28.png";
+    QString const pix29_free =":/free/free/29.png";
+    QString const pix30_free =":/free/free/30.png";
+
+
+
+
+    free_list.push_back(pix1_free);
+    free_list.push_back(pix2_free);
+    free_list.push_back(pix3_free);
+    free_list.push_back(pix4_free);
+    free_list.push_back(pix5_free);
+    free_list.push_back(pix6_free);
+    free_list.push_back(pix7_free);
+    free_list.push_back(pix8_free);
+    free_list.push_back(pix9_free);
+    free_list.push_back(pix10_free);
+    free_list.push_back(pix11_free);
+    free_list.push_back(pix12_free);
+    free_list.push_back(pix13_free);
+    free_list.push_back(pix14_free);
+    free_list.push_back(pix15_free);
+    free_list.push_back(pix16_free);
+    free_list.push_back(pix17_free);
+    free_list.push_back(pix18_free);
+    free_list.push_back(pix19_free);
+    free_list.push_back(pix20_free);
+    free_list.push_back(pix21_free);
+    free_list.push_back(pix22_free);
+    free_list.push_back(pix23_free);
+    free_list.push_back(pix24_free);
+    free_list.push_back(pix25_free);
+    free_list.push_back(pix26_free);
+    free_list.push_back(pix27_free);
+    free_list.push_back(pix28_free);
+    free_list.push_back(pix29_free);
+    free_list.push_back(pix30_free);
+}
+
+void MainWindow::update(){
+QString data1;
+   // data1=a.read_from_arduino();
+    //serialbuffer +=QString::fromStdString(data.toStdString());
+      //qDebug() << serialbuffer;
+    qDebug()<<data1;
+
+
+  //delete from base where serial buffer exsist
+      QSqlQuery query;
+      query.prepare("delete from reservation where resID=:data1");
+      query.bindValue(0,data1);
+      if (query.exec()==false){
+        //a.write_to_arduino("1");
+      qDebug()<<"done" ;}
+      else if (query.exec()==true)
+      {//a.write_to_arduino("0");
+         qDebug()<<"not done";
+      }
+
+
+    //data.toStdString();
+
+    //if (data.size()==4)
+    //{
+
+    //}
+}
+
+void MainWindow::on_pbModifEsp_clicked()
+{
+    int ancien_nb=Esp.getNb();
+    int id =ui->combo_modifEsp->currentText().toInt();
+    int nb =ui->nb_modifEsp->text().toInt();
+    QString bloc =ui->bloc_modifEsp->text();
+    QDate date = ui->date_modifEsp->date();
+    for(int i=0;i<ui->tableAffich->model()->rowCount();i++)
+    {
+        if(ui->tableAffich->model()->index(i,0).data().toInt()==id)
+            ancien_nb=ui->tableAffich->model()->index(i,1).data().toInt();
+    }
+
+    espace e(id,nb,bloc,date);
+
+    bool test=e.modifier();
+    if (test)
+    {
+        ui->tableAffich->setModel(Esp.afficher());
+        ui->comboMap->setModel(Esp.afficher2());
+        ui->combo_modifEsp->setModel(Esp.afficher2());
+
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Modification effectuee\n"
+                                             "Click Cancel to exit."), QMessageBox::Cancel);
+        if(ancien_nb!=nb)
+        {
+            ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+            int index;
+            for(index=0;index<ui->tableAffich->model()->rowCount();index++)
+            {
+                if(ui->tableAffich->model()->index(index,0).data().toInt()==id)
+                    break;
+            }
+            QVector<QGraphicsPixmapItem*> vector;
+            for(int i=0;i<pic_list[index].size();i++)
+            {
+                QPixmap pix(free_list[i]);
+                QGraphicsPixmapItem* pic;
+                pic = scene_list[index]->addPixmap(pix);
+                vector.push_back(pic);
+                pic_list[index] = vector;
+            }
+        }
+    }
+    else
+        QMessageBox::critical(nullptr, QObject::tr("NOT OK"),
+                              QObject::tr("Modification non effectuee.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+}
+
+void MainWindow::on_combo_modifEsp_currentIndexChanged(const QString &arg1)
+{
+    QString id_string = ui->combo_modifEsp->currentText();
+
+    QSqlQuery qry;
+    qry.prepare("select * from espaces where id='"+id_string+"'");
+    if(qry.exec())
+    {
+        while(qry.next())
+        {
+            ui->nb_modifEsp->setText(qry.value(1).toString());
+            ui->bloc_modifEsp->setText(qry.value(2).toString());
+        }
+    }
+}
+
+void MainWindow::on_pbSuppr_clicked()
+{
+    int id =ui->combo_modifEsp->currentText().toInt();
+    bool test=Esp.supprimer(id);
+    if (test)
+    {
+        ui->tableAffich->setModel(Esp.afficher());
+        ui->comboMap->setModel(Esp.afficher2());
+        ui->combo_modifEsp->setModel(Esp.afficher2());
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Suppression effectuee\n"
+                                             "Click Cancel to exit."), QMessageBox::Cancel);
+        int n= ui->combo_modifEsp->currentIndex();
+        scene_list.erase(scene_list.begin()+n);
+        pic_list.erase(pic_list.begin()+n);
+    }
+    else
+        QMessageBox::critical(nullptr, QObject::tr("NOT OK"),
+                              QObject::tr("Suppression non effectuee.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+}
+
+void MainWindow::on_comboMap_currentIndexChanged(int index)
+{
+    if (l)
+    {
+
+        ui->graphicsView_map->setScene(scene_list[index]);
+        QString id_string = ui->comboMap->currentText();
+        QString places;
+        QSqlQuery query;
+        query.prepare("Select * from espaces where ID='"+id_string+"'");
+        if(query.exec()){
+            while(query.next())
+            {
+                places=query.value(4).toString();
+            }
+
+        }
+
+    for(int i=0;i<pic_list[index].size();i++)
+    {
+
+
+
+       // QString places = ui->tableAffich->model()->index(index,4).data().toString();
+        if(places[i]=='n')
+        {
+            QPixmap pix(busy_list[i]);
+            pic_list[index][i]->setPixmap(pix);
+        }
+        else
+        {
+            QPixmap pix(free_list[i]);
+            pic_list[index][i]->setPixmap(pix);
+        }
+    }
+    }
+    l=true;
+}
+
+void MainWindow::on_pbGauche_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+    QVector<QGraphicsPixmapItem*> vector= pic_list[n];
+
+
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            pic_list[n][i]->setRotation(pic_list[n][i]->rotation()+45);
+        }
+    }
+}
+
+void MainWindow::on_pbDroite_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+
+
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            pic_list[n][i]->setRotation(pic_list[n][i]->rotation()-45);
+        }
+    }
+}
+
+void MainWindow::on_pbBusy_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            QByteArray led;
+            led.setNum(i);
+            //a.write_to_arduino(led);
+            QPixmap pix(busy_list[i]);
+            pic_list[n][i]->setPixmap(pix);
+            ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+            QString id_string = ui->comboMap->currentText();
+            QString places;
+            QSqlQuery query;
+            query.prepare("Select * from espaces where ID='"+id_string+"'");
+            if(query.exec()){
+                while(query.next())
+                {
+                    places=query.value(4).toString();
+                }
+
+            }
+
+            qDebug() << places;
+            places[i]='n';
+            qDebug() << places;
+            //QSqlQuery query;
+            query.prepare("Update espaces set places=:places where ID= :id");
+            query.bindValue(":id",id_string);
+            query.bindValue(":places",places);
+            query.exec();
+            ui->tableAffich->setModel(Esp.afficher());
+            qDebug() << ui->tableAffich->model()->index(n,4).data();
+
+        }
+    }
+}
+
+void MainWindow::on_pbFree_clicked()
+{
+    int n = ui->comboMap->currentIndex();
+    for(int i=0;i<pic_list[n].size();i++)
+    {
+        if(pic_list[n][i]->isSelected())
+        {
+            QByteArray led;
+            led.setNum(i+5);
+            //a.write_to_arduino(led);
+
+            ui->tableAffich->sortByColumn(1, Qt::AscendingOrder);
+            QString id_string = ui->comboMap->currentText();
+            QString places;
+            QSqlQuery query;
+            query.prepare("Select * from espaces where ID='"+id_string+"'");
+            if(query.exec()){
+                while(query.next())
+                {
+                    places=query.value(4).toString();
+                }
+
+            }
+
+            qDebug() << places;
+            places[i]='o';
+            qDebug() << places;
+            //QSqlQuery query;
+            query.prepare("Update espaces set places=:places where ID= :id");
+            query.bindValue(":id",id_string);
+            query.bindValue(":places",places);
+            query.exec();
+            ui->tableAffich->setModel(Esp.afficher());
+            qDebug() << ui->tableAffich->model()->index(n,4).data();
+        }
+    }
+}
+
+void MainWindow::on_pbPDFEsp_clicked()
+{
+    //lemplacement de fichier a enregistrer
+    QString filePath;
+    filePath = QFileDialog::AcceptSave;
+    filePath = QFileDialog::Directory;
+    filePath= QFileDialog::getOpenFileName(this,tr("Emplacement du PDF"),
+                                                    "C:/Users/Oussema/Desktop",
+                                                    "PDF files (*.pdf);; All files (*.*)");
+    QString _1,_2;
+    _1="espace";
+    _2=".pdf";
+
+    QPdfWriter pdf(filePath+_1+ui->combo_modifEsp->currentText()+_2);
+    QPainter print(&pdf);
+    print.setRenderHint(QPainter::Antialiasing);
+
+    //recherche des information a printer
+    int id=ui->combo_modifEsp->currentText().toInt();
+    QSqlQuery query;
+    query.prepare("select * from espaces where id=:id");
+    query.bindValue(":id",id);
+
+    //QString cin,nom,prenom,date,email,genre;
+    QString id_string,nb_string,bloc,date;
+    //ajout des donnee dans les variables
+    if(query.exec())
+    {
+            while (query.next())
+            {
+                id_string=query.value(0).toString();
+                nb_string=query.value(1).toString();
+                bloc=query.value(2).toString();
+                date=query.value(3).toString();
+            }
+     }
+    //creation de design de fichier
+    print.setBackgroundMode(Qt::OpaqueMode);
+    //ajout dun image
+    print.drawPixmap(QRect(7400,0,2000,2000),QPixmap(":/img/logo.png"));
+    //contenu
+    print.setPen(Qt::black);
+    print.setFont(QFont("Arial", 20));
+    QString str = "Fiche espace ";
+    print.drawText(3500,1000,str+ui->combo_modifEsp->currentText());
+    print.setFont(QFont("Arial", 10));
+    print.setPen(Qt::black);
+    print.drawText(3500,3000,"ID:");
+    print.setPen(Qt::black);
+    print.drawText(3900,3000,id_string);
+    print.setPen(Qt::black);
+    print.drawText(3500,3400,"Nombre de places:");
+    print.setPen(Qt::black);
+    print.drawText(5000,3400,nb_string);
+    print.setPen(Qt::black);
+    print.drawText(3500,3800,"Bloc:");
+    print.setPen(Qt::black);
+    print.drawText(3900,3800,bloc);
+    print.setPen(Qt::black);
+    print.drawText(3500,4200,"Date:");
+    print.setPen(Qt::black);
+    print.drawText(4000,4200,date);
+    print.setPen(Qt::black);
+    print.drawRect(3200,2500,5000,3000);
+
+    print.end();
+}
+
+void MainWindow::on_pbServer_clicked()
+{
+    ServerWindow * serverWin = new ServerWindow(nullptr);
+    serverWin->show();
+}
+
+void MainWindow::on_pbChat_clicked()
+{
+    ChatWindow* chatWin = new ChatWindow(nullptr);
+    chatWin->show();
+}
+
+void MainWindow::on_pbTrier_clicked()
+{
+    if(ui->cbTri->currentIndex()==0){
+    if(ui->checkBox->isChecked())
+    {
+        if(ui->checkBox_2->isChecked())
+        {
+            if(ui->checkBox_3->isChecked())
+            {
+                ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+            }
+            ui->tableView->sortByColumn(1, Qt::AscendingOrder);
+        }
+        else if(ui->checkBox_3->isChecked())
+        {
+            ui->tableView->sortByColumn(3, Qt::AscendingOrder);
+        }
+        ui->tableView->sortByColumn(0, Qt::AscendingOrder);
+    }
+    else if(ui->checkBox_2->isChecked())
+    {
+
+        if(ui->checkBox_3->isChecked())
+        {
+            ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+        }
+        ui->tableView->sortByColumn(1, Qt::AscendingOrder);
+    }
+    else if(ui->checkBox_3->isChecked())
+    {
+        ui->tableView->sortByColumn(2, Qt::AscendingOrder);
+    }
+    }
+    else if(ui->cbTri->currentIndex()==1)
+    {
+        if(ui->checkBox->isChecked())
+        {
+            if(ui->checkBox_2->isChecked())
+            {
+                if(ui->checkBox_3->isChecked())
+                {
+                    ui->tableView->sortByColumn(2, Qt::DescendingOrder);
+                }
+                ui->tableView->sortByColumn(1, Qt::DescendingOrder);
+            }
+            else if(ui->checkBox_3->isChecked())
+            {
+                ui->tableView->sortByColumn(3, Qt::DescendingOrder);
+            }
+            ui->tableView->sortByColumn(0, Qt::DescendingOrder);
+        }
+        else if(ui->checkBox_2->isChecked())
+        {
+
+            if(ui->checkBox_3->isChecked())
+            {
+                ui->tableView->sortByColumn(2, Qt::DescendingOrder);
+            }
+            ui->tableView->sortByColumn(1, Qt::DescendingOrder);
+        }
+        else if(ui->checkBox_3->isChecked())
+        {
+            ui->tableView->sortByColumn(2, Qt::DescendingOrder);
+        }
+    }
+}
+
+void MainWindow::on_pbRechercher_clicked()
+{
+    bool found = false;
+    int taille =  ui->tableView->model()->rowCount();
+    for(int i=0; i<taille ; i++)
+    {
+        if(ui->tableView->model()->index(i,0).data().toString() == ui->leRechercher->text())
+        {
+            ui->tableView->selectRow(i);
+            found = true;
+        }
+    }
+    if (!found)
+    {
+        QMessageBox::critical(nullptr, QObject::tr("NOT OK"),
+                              QObject::tr("Inexistant!.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
+    }
+}
+
+void MainWindow::on_pbActualiserEsp_clicked()
+{
+    int index=ui->comboMap->currentIndex();
+    ui->graphicsView_map->setScene(scene_list[index]);
+    QString id_string = ui->comboMap->currentText();
+    QString places;
+    QSqlQuery query;
+    query.prepare("Select * from espaces where ID='"+id_string+"'");
+    if(query.exec()){
+        while(query.next())
+        {
+            places=query.value(4).toString();
+        }
+
+    }
+
+for(int i=0;i<pic_list[index].size();i++)
+{
+
+
+
+   // QString places = ui->tableAffich->model()->index(index,4).data().toString();
+    if(places[i]=='n')
+    {
+        QByteArray led;
+        led.setNum(1);
+        //a.write_to_arduino(led);
+        QPixmap pix(busy_list[i]);
+        pic_list[index][i]->setPixmap(pix);
+    }
+    else
+    {
+        //a.write_to_arduino(ledOff[i]);
+        QPixmap pix(free_list[i]);
+        pic_list[index][i]->setPixmap(pix);
+    }
+}
 }

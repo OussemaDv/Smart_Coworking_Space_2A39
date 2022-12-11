@@ -30,6 +30,73 @@
 #include "arduino.h"
 #include "employe.h"
 
+//***Fourniss**
+#include "Fournisseur.h"
+#include "dialog.h"
+#include "Detecteur.h"
+#include "map.h"
+#include <QDesktopServices>
+#include <QUrl>
+//
+//********Materiels*****
+#include <QMainWindow>
+#include <QApplication>
+#include <QMessageBox>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
+#include "materiels.h"
+#include <QPrinter>
+#include <QPixmap>
+#include <QPainter>
+#include <QPrintDialog>
+#include <QPagedPaintDevice>
+#include <QTableView>
+#include <QDesktopServices>
+#include <QtCharts/QAreaSeries>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QPieSlice>
+#include <QPieSeries>
+#include <QChartView>
+#include "Detecteur.h"
+#include"catalogue.h"
+#include "exportexcelobject.h"
+#include <QMessageBox>
+
+//************Espace
+
+#include "espace.h"
+#include <QMessageBox>
+#include <QVector>
+#include <QString>
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QPixmap>
+#include <QtCharts>
+#include <QChartView>
+#include <QPieSeries>
+#include <QPieSlice>
+#include <QBarSet>
+#include <QBarSeries>
+#include <QChar>
+#include <math.h>
+#include "serverwindow.h"
+#include "serverworker.h"
+#include "chatserver.h"
+#include "chatclient.h"
+#include "chatwindow.h"
+#include <QTableView>
+#include <QPrinter>
+#include <QPainter>
+#include <QPdfWriter>
+#include <QDebug>
+#include <QtDebug>
+#include <QPrintDialog>
+#include <QFileDialog>
+//
+
+
+
 using namespace std;
 
 #define valid_email "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$"
@@ -49,6 +116,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void statistique();
+
+    QChart * statSalle();
+    QChart * statPlace();
+    void setBusyList();
+
+    void setFreeList();
+    void update();
 
 
 private slots:
@@ -119,6 +194,97 @@ private slots:
 
     void on_pb_stat_reservation_clicked();
 
+    //*********Fourn*******
+    void on_button_ajouter_clicked();
+
+       void on_pbSupprimer_clicked();
+
+       void on_updateBP_clicked();
+
+       void on_comboBoxID_currentIndexChanged(const QString &arg1);
+
+       void on_pdfPb_clicked();
+
+       void on_emailpb_clicked();
+
+       void on_rechercherpb_clicked();
+
+
+       void on_check_quantite_clicked();
+
+       void on_check_prix_clicked();
+
+       void on_check_ID_clicked();
+
+       void on_whatsapp_pb_clicked();
+
+       void on_map_clicked();
+
+       void on_afficher_clicked();
+
+       void on_detection_clicked();
+       //
+       //*********Materiels*******
+
+       void on_bajouter_clicked();
+
+           void on_bsupprimer_clicked();
+
+           void on_bmodifier_clicked();
+
+           void on_bpdf_clicked();
+
+           void on_lrecherche_textChanged(const QString &arg1);
+
+           void on_tridate_clicked();
+
+           void on_trinombre_clicked();
+
+           void on_triid_clicked();
+
+          // void on_bstat_clicked();
+
+           void on_pushButton_clicked();
+
+           void on_bcatalogue_clicked();
+
+           void on_bexcel_clicked();
+
+
+           //*****************************Espace*************************
+
+       //
+
+           void on_pbAjoutEsp_clicked();
+
+           void on_pbModifEsp_clicked();
+
+           void on_combo_modifEsp_currentIndexChanged(const QString &arg1);
+
+           void on_pbSuppr_clicked();
+
+           void on_comboMap_currentIndexChanged(int index);
+
+           void on_pbGauche_clicked();
+
+           void on_pbDroite_clicked();
+
+           void on_pbBusy_clicked();
+
+           void on_pbFree_clicked();
+
+           void on_pbPDFEsp_clicked();
+
+           void on_pbServer_clicked();
+
+           void on_pbChat_clicked();
+
+           void on_pbTrier_clicked();
+
+           void on_pbRechercher_clicked();
+
+           void on_pbActualiserEsp_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -126,14 +292,32 @@ private:
     arduino ar;
     QByteArray data;
     Reservation R;
+    //
     employe e;
     QListView* m_pwPending = nullptr;
     QListView* m_pwCompleted = nullptr;
 
     QAction* m_pActAdd = nullptr;
     QAction* m_pActRemove = nullptr;
+//
+    Fournisseur Etmp;
+       dialog *Di ;
+       Detecteur *E;
+       Map *m;
+       //
+       Materiels M;
+         // Espace *E;
+          catalogue *C;
+          espace Esp;
+          QVector<QString> free_list;
+          QVector<QString> busy_list;
+          QVector<QGraphicsScene*> scene_list;
+          QVector<QVector<QGraphicsPixmapItem*>> pic_list;
+          bool l=false,l2=false;
+          QChartView * chartview;
 
-
+          QVector <QByteArray> ledOff = {"a","b","c","d","e"};
+          QString serialbuffer;
 
 };
 #endif // MAINWINDOW_H
