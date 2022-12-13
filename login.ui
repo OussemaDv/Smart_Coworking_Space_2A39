@@ -49,11 +49,11 @@ background-repeat: none;
    </property>
    <property name="styleSheet">
     <string notr="true">#user{
-    background-color: #ffffff;
+
     border-style: outset;
     border-width: 1px;
     font: bold 14px;
-    color:#ffffff;
+
     padding: 2px;
 	border-radius:12px;
 }</string>
@@ -70,14 +70,17 @@ background-repeat: none;
    </property>
    <property name="styleSheet">
     <string notr="true">#pass{
-    background-color: #ffffff;
+
     border-style: outset;
     border-width: 1px;
     font: bold 14px;
-    color:#ffffff;
+
     padding: 2px;
 	border-radius:12px;
 }</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label">

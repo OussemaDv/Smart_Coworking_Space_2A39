@@ -569,7 +569,7 @@ void MainWindow::dialog1()
             {
                 nom=qry.value(1).toString();
             }
-        }
+       }
         QByteArray esem(nom.toUtf8(),6);
         qDebug()<<esem;//affichage
         ar.write_to_arduino(esem);
